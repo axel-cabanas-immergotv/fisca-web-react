@@ -1,0 +1,133 @@
+<!-- Story Editor -->
+<div x-show="currentSection === 'story-editor'" class="story-editor-container">
+    <!-- Editor Header -->
+    <div class="editor-header">
+        <div class="editor-header-left">
+            <button class="btn btn-link editor-back-btn" @click="storiesModule.back()">
+                <i class="fas fa-chevron-left me-2"></i>BACK
+            </button>
+            <h1 class="editor-title" x-text="storiesModule.currentStory.id ? 'Edit Story' : 'Create New Story'"></h1>
+        </div>
+        
+        <div class="editor-header-right">
+            <select class="form-select me-2" style="width: auto;" x-model="storiesModule.currentStory.status">
+                <option value="draft">Draft</option>
+                <option value="published">Published</option>
+                <option value="archived">Archived</option>
+            </select>
+            <button class="btn btn-primary" @click="storiesModule.save()">
+                <i class="fas fa-save me-1"></i>SAVE
+            </button>
+        </div>
+    </div>
+
+    <!-- Editor Content -->
+    <div class="editor-content-wrapper row">
+        <div class="editor-main-content col-10">
+            <!-- Story Title -->
+            <div class="story-title-section mb-4">
+                <input type="text" 
+                       class="form-control form-control-lg border-0 p-0" 
+                       placeholder="Enter story title..."
+                       x-model="storiesModule.currentStory.title"
+                       @input="!storiesModule.currentStory.id && !storiesModule.currentStory.slug ? storiesModule.currentStory.slug = $event.target.value.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').trim('-') : null"
+                       style="font-size: 2.5rem; font-weight: bold;">
+            </div>
+            
+            <!-- Story Subtitle -->
+            <div class="story-subtitle-section mb-4">
+                <input type="text" 
+                       class="form-control border-0 p-0" 
+                       placeholder="Add a subtitle (optional)..."
+                       x-model="storiesModule.currentStory.subtitle"
+                       style="font-size: 1.2rem; color: #6c757d;">
+            </div>
+
+            <!-- Editor.js Container -->
+            <div class="story-content-section">
+                <div id="story-editor" class="visual-editor">
+                    <!-- Editor.js will be initialized here -->
+                </div>
+            </div>
+        </div>  
+
+        <!-- Story Sidebar -->
+        <div class="editor-sidebar col-2">
+            <div class="sidebar-panel">
+                <!-- Publish Panel -->
+                <div class="panel-section">
+                    <h6 class="panel-title">PUBLISH</h6>
+                    <div class="form-group mb-3">
+                        <label class="form-label">Status</label>
+                        <select class="form-control" x-model="storiesModule.currentStory.status">
+                            <option value="draft">Draft</option>
+                            <option value="published">Published</option>
+                            <option value="archived">Archived</option>
+                        </select>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="form-label">Category</label>
+                        <select class="form-control" x-model="storiesModule.currentStory.category_id">
+                            <option value="">Select Category</option>
+                            <template x-for="category in storiesModule.availableCategories" :key="category.id">
+                                <option :value="category.id" x-text="category.name"></option>
+                            </template>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Featured Image Panel -->
+                <div class="panel-section">
+                    <h6 class="panel-title">FEATURED IMAGE</h6>
+                    <div class="form-group mb-3">
+                        <!-- Dropzone for drag & drop -->
+                        <div id="featured-image-dropzone">
+                            <!-- Dropzone will be initialized here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SEO Panel -->
+                <div class="panel-section">
+                    <h6 class="panel-title">SEO</h6>
+                    <div class="form-group mb-3">
+                        <label class="form-label">Slug</label>
+                        <input type="text" class="form-control" 
+                               x-model="storiesModule.currentStory.slug"
+                               placeholder="story-slug">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="form-label">Meta Title</label>
+                        <input type="text" class="form-control" 
+                               x-model="storiesModule.currentStory.meta_title"
+                               placeholder="SEO title">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="form-label">Meta Description</label>
+                        <textarea class="form-control" rows="3"
+                                  x-model="storiesModule.currentStory.meta_description"
+                                  placeholder="SEO description"></textarea>
+                    </div>
+                </div>
+
+                <!-- Custom CSS Panel -->
+                <div class="panel-section">
+                    <h6 class="panel-title">CUSTOM CSS</h6>
+                    <div class="form-group mb-3">
+                        <label class="form-label">CSS Code</label>
+                        <textarea class="form-control" rows="8"
+                                  x-model="storiesModule.currentStory.custom_css"
+                                  placeholder="/* Custom CSS for this story */&#10;.story-content {&#10;  /* Your styles here */&#10;}"
+                                  style="font-family: 'Courier New', monospace; font-size: 12px; resize: none;"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-sm btn-outline-secondary" 
+                                @click="storiesModule.clearCustomCSS()">
+                            <i class="fas fa-trash me-1"></i>Clear
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

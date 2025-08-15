@@ -1,0 +1,16 @@
+<!-- Affiliates -->
+<div x-show="currentSection === 'affiliates'" class="content-section">
+    <div class="content-header d-flex justify-content-between align-items-center">
+        <div>
+            <h1>Affiliates</h1>
+            <p class="text-muted">Manage affiliate organizations and tenant codes</p>
+        </div>
+        <button class="btn btn-primary" @click="affiliatesModule.new()" x-show="hasPermission('affiliates.create')">
+            <i class="fas fa-plus me-2"></i>Add New Affiliate
+        </button>
+    </div>
+    
+    <div id="affiliates-content">
+        <!-- Affiliates content will be loaded here -->
+    </div>
+</div> 

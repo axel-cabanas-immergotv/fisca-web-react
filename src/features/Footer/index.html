@@ -1,0 +1,75 @@
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal Container -->
+    <div id="modal-container"></div>
+    
+    <!-- Notification Container -->
+    <div id="notification-container" class="notification-container"></div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <!-- Editor.js - Using CDN versions that expose globals properly -->
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@2.28.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/header@2.7.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/paragraph@2.10.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/list@1.8.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/quote@2.5.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/table@2.2.1"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/delimiter@1.3.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/image@2.8.1/dist/bundle.min.js"></script>
+    <!-- Text Align Plugin -->
+    <script src="https://cdn.jsdelivr.net/npm/@canburaks/text-align-editorjs@1.1.0/dist/text-align.umd.min.js"></script>
+    <!-- Columns Plugin -->
+    <script src="/src/editorjs/columns/columns-global.js"></script>
+    <!-- Stories Reel Plugin -->
+    <script src="/src/editorjs/storiesreel/storiesreel-global.js"></script>
+    
+    <!-- AdvUnit Plugin -->
+    <script src="/advunit-global.js"></script>
+    
+    <!-- Verify Editor.js globals are loaded -->
+    <script>
+        window.addEventListener('DOMContentLoaded', function() {
+            console.log('Checking Editor.js tools...');
+            console.log('EditorJS:', typeof EditorJS);
+            console.log('Header:', typeof Header);
+            console.log('Paragraph:', typeof Paragraph);
+            console.log('List:', typeof List);
+            console.log('Quote:', typeof Quote);
+            console.log('Table:', typeof Table);
+            console.log('Delimiter:', typeof Delimiter);
+            console.log('SimpleImage:', typeof SimpleImage);
+            console.log('TextAlign:', typeof TextAlign);
+            console.log('ColumnsBlock:', typeof ColumnsBlock);
+            console.log('AdvUnitBlock:', typeof AdvUnitBlock);
+            
+            if (typeof Header === 'undefined') {
+                console.error('Editor.js tools not loaded properly!');
+            } else if (typeof ColumnsBlock === 'undefined') {
+                console.error('Columns plugin not loaded properly!');
+            } else if (typeof AdvUnitBlock === 'undefined') {
+                console.error('AdvUnit plugin not loaded properly!');
+            } else {
+                console.log('✅ All Editor.js tools and plugins loaded successfully');
+            }
+        });
+    </script>
+    
+    <!-- Centralized Editor.js Configuration -->
+    <script src="/src/admin/editorConfig.js"></script>
+    
+    <!-- Admin Module Components -->
+    <script src="/src/admin/Utils/dropzone.js"></script>
+    <script src="/src/admin/Utils/tableComponent.js"></script>
+    <script src="/src/admin/Utils/Select/index.js"></script>
+    
+    <!-- Main Admin JS (now includes all modules via imports) -->
+    <script src="/admin.js"></script>
+</body>
+</html> 

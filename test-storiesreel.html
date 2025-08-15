@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StoriesReel Test</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- StoriesReel CSS -->
+    <link href="/storiesreel.css" rel="stylesheet">
+    <style>
+        body { padding: 2rem; }
+        .test-section { margin: 3rem 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>StoriesReel Widget Test</h1>
+        <p class="lead">Testing different layouts of the StoriesReel widget in frontend view mode.</p>
+        
+        <div class="test-section">
+            <h2>1. Featured + Grid Layout</h2>
+            <div id="test-featured-grid"></div>
+        </div>
+        
+        <div class="test-section">
+            <h2>2. Grid Only Layout</h2>
+            <div id="test-grid-only"></div>
+        </div>
+        
+        <div class="test-section">
+            <h2>3. List Layout</h2>
+            <div id="test-list"></div>
+        </div>
+    </div>
+
+    <!-- Include the ContentRenderer from main.js -->
+    <script>
+        // Simplified API for testing
+        const api = {
+            async get(url) {
+                // Mock API response for testing
+                return {
+                    success: true,
+                    data: [] // Empty data will trigger mock data generation
+                };
+            }
+        };
+
+        // Include the ContentRenderer class
+        // (This is copied from main.js for standalone testing)
+        class ContentRenderer {
+            constructor(containerId) {
+                this.container = document.getElementById(containerId);
+            }
+
+            async renderStoriesReel(data) {
+                try {
+                    // Extract configuration from data
+                    const layout = data.layout || 'featured-grid';
+                    const count = data.count || 4;
+                    const category = data.category || '';
+                    const showTitle = data.showTitle !== undefined ? data.showTitle : true;
+                    const title = data.title || 'Latest Stories';
+                    const showDates = data.showDates !== undefined ? data.showDates : true;
+                    const showExcerpts = data.showExcerpts !== undefined ? data.showExcerpts : false;
+                    const showAuthor = data.showAuthor !== undefined ? data.showAuthor : false;
+                    const useRandomImages = data.useRandomImages !== undefined ? data.useRandomImages : true;
+
+                    // For testing, always use mock data
+                    const stories = this.generateMockStoriesData(count, useRandomImages);
+
+                    // Create main container
+                    const container = document.createElement('div');
+                    container.className = 'stories-reel-block';
+
+                    // Add title if enabled
+                    if (showTitle && title) {
+                        const titleElement = document.createElement('h3');
+                        titleElement.className = 'stories-reel-title';
+                        titleElement.textContent = title;
+                        container.appendChild(titleElement);
+                    }
+
+                    // Create content container
+                    const contentContainer = document.createElement('div');
+                    contentContainer.className = 'stories-reel-container';
+
+                    // Render based on layout
+                    if (layout === 'featured-grid') {
+                        const featuredContent = this.renderFeaturedGridLayout(stories, { showDates, showExcerpts, showAuthor });
+                        contentContainer.appendChild(featuredContent);
+                    } else if (layout === 'grid-only') {
+                        const gridContent = this.renderGridOnlyLayout(stories, { showDates, showExcerpts, showAuthor });
+                        contentContainer.appendChild(gridContent);
+                    } else if (layout === 'list') {
+                        const listContent = this.renderListLayout(stories, { showDates, showExcerpts, showAuthor });
+                        contentContainer.appendChild(listContent);
+                    }
+
+                    container.appendChild(contentContainer);
+                    this.container.appendChild(container);
+
+                } catch (error) {
+                    console.error('Error rendering stories reel:', error);
+                    const errorDiv = document.createElement('div');
+                    errorDiv.className = 'alert alert-warning mb-3';
+                    errorDiv.textContent = 'Error loading stories reel';
+                    this.container.appendChild(errorDiv);
+                }
+            }
+
+            generateMockStoriesData(count, useRandomImages) {
+                const mockTitles = [
+                    "Free Summer Concert Series at Eldridge Park in Elmira on Sundays",
+                    "Tops Friendly Markets Exceeds Fundraising Goal and Raises over $414,000 for Children's",
+                    "Gus Macker Tournament brings people together in downtown Elmira", 
+                    "Bikers ride through the Southern Tier for the 18th annual Troop Ride"
+                ];
+
+                const mockExcerpts = [
+                    "Join us for free outdoor concerts every Sunday during the summer season.",
+                    "Local grocery chain surpasses fundraising expectations in their annual charity drive.",
+                    "Basketball tournament creates community spirit and brings families together.",
+                    "Motorcycle enthusiasts gather for their traditional ride supporting local veterans."
+                ];
+
+                const mockAuthors = ["Sarah Johnson", "Mike Chen", "Emily Rodriguez", "David Thompson"];
+
+                const stories = [];
+                for (let i = 0; i < count; i++) {
+                    const randomSeed = 100 + i; // Fixed seed for consistent testing
+                    stories.push({
+                        id: i + 1,
+                        title: mockTitles[i % mockTitles.length],
+                        excerpt: mockExcerpts[i % mockExcerpts.length],
+                        slug: `story-${i + 1}`,
+                        featured_image: `https://picsum.photos/800/600?random=${randomSeed}`,
+                        published_at: new Date(Date.now() - (i + 1) * 2 * 60 * 60 * 1000).toISOString(),
+                        author: {
+                            first_name: mockAuthors[i % mockAuthors.length].split(' ')[0],
+                            last_name: mockAuthors[i % mockAuthors.length].split(' ')[1]
+                        },
+                        category: {
+                            name: ['News', 'Events', 'Sports', 'Community'][i % 4],
+                            slug: ['news', 'events', 'sports', 'community'][i % 4]
+                        }
+                    });
+                }
+                return stories;
+            }
+
+            renderFeaturedGridLayout(stories, options) {
+                const container = document.createElement('div');
+                
+                if (stories.length === 0) return container;
+
+                const [featured, ...others] = stories;
+
+                // Featured story
+                const featuredContainer = document.createElement('div');
+                featuredContainer.className = 'stories-reel-featured';
+                
+                featuredContainer.innerHTML = `
+                    <a href="/story/${featured.slug}" class="story-featured-link">
+                        <div class="story-featured" style="background-image: url('${featured.featured_image}')">
+                            <div class="story-featured-overlay">
+                                <h2 class="story-featured-title">${featured.title}</h2>
+                                ${options.showDates ? `<span class="story-featured-date">${this.formatTimeAgo(featured.published_at)}</span>` : ''}
+                            </div>
+                        </div>
+                    </a>
+                `;
+
+                container.appendChild(featuredContainer);
+
+                // Grid of other stories
+                if (others.length > 0) {
+                    const gridContainer = document.createElement('div');
+                    gridContainer.className = 'stories-reel-grid';
+
+                    others.forEach(story => {
+                        const storyCard = this.renderStoryCard(story, options);
+                        gridContainer.appendChild(storyCard);
+                    });
+
+                    container.appendChild(gridContainer);
+                }
+
+                return container;
+            }
+
+            renderGridOnlyLayout(stories, options) {
+                const container = document.createElement('div');
+                container.className = 'stories-reel-grid stories-reel-grid-only';
+
+                stories.forEach(story => {
+                    const storyCard = this.renderStoryCard(story, options);
+                    container.appendChild(storyCard);
+                });
+
+                return container;
+            }
+
+            renderListLayout(stories, options) {
+                const container = document.createElement('div');
+                container.className = 'stories-reel-list';
+
+                stories.forEach(story => {
+                    const listItem = document.createElement('div');
+                    listItem.className = 'story-list-item';
+
+                    listItem.innerHTML = `
+                        <a href="/story/${story.slug}" class="story-list-link">
+                            <div class="story-list-image">
+                                <img src="${story.featured_image}" alt="${story.title}" />
+                            </div>
+                            <div class="story-list-content">
+                                <h4 class="story-list-title">${story.title}</h4>
+                                ${options.showExcerpts ? `<p class="story-list-excerpt">${story.excerpt}</p>` : ''}
+                                <div class="story-list-meta">
+                                    ${options.showDates ? `<span class="story-list-date">${this.formatTimeAgo(story.published_at)}</span>` : ''}
+                                    ${options.showAuthor ? `<span class="story-list-author">by ${story.author.first_name} ${story.author.last_name}</span>` : ''}
+                                </div>
+                            </div>
+                        </a>
+                    `;
+
+                    container.appendChild(listItem);
+                });
+
+                return container;
+            }
+
+            renderStoryCard(story, options) {
+                const card = document.createElement('div');
+                card.className = 'story-card';
+
+                card.innerHTML = `
+                    <a href="/story/${story.slug}" class="story-card-link">
+                        <div class="story-card-image">
+                            <img src="${story.featured_image}" alt="${story.title}" />
+                            ${story.category ? `<span class="story-card-category">${story.category.name}</span>` : ''}
+                        </div>
+                        <div class="story-card-content">
+                            <h4 class="story-card-title">${story.title}</h4>
+                            ${options.showExcerpts ? `<p class="story-card-excerpt">${story.excerpt}</p>` : ''}
+                            <div class="story-card-meta">
+                                ${options.showDates ? `<span class="story-card-date">${this.formatTimeAgo(story.published_at)}</span>` : ''}
+                                ${options.showAuthor ? `<span class="story-card-author">by ${story.author.first_name} ${story.author.last_name}</span>` : ''}
+                            </div>
+                        </div>
+                    </a>
+                `;
+
+                return card;
+            }
+
+            formatTimeAgo(dateString) {
+                const date = new Date(dateString);
+                const now = new Date();
+                const diffInMs = now - date;
+                const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
+                const diffInDays = Math.floor(diffInHours / 24);
+
+                if (diffInDays > 0) {
+                    return `${diffInDays} day${diffInDays > 1 ? 's' : ''} ago`;
+                } else if (diffInHours > 0) {
+                    const remainingMinutes = Math.floor((diffInMs % (1000 * 60 * 60)) / (1000 * 60));
+                    return `${diffInHours} hr${diffInHours > 1 ? 's' : ''} ${remainingMinutes} min${remainingMinutes > 1 ? 's' : ''} ago`;
+                } else {
+                    const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
+                    return `${Math.max(1, diffInMinutes)} min${diffInMinutes > 1 ? 's' : ''} ago`;
+                }
+            }
+        }
+
+        // Test the different layouts
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Test Featured + Grid Layout
+            const renderer1 = new ContentRenderer('test-featured-grid');
+            await renderer1.renderStoriesReel({
+                layout: 'featured-grid',
+                count: 4,
+                title: 'Featured Stories',
+                showTitle: true,
+                showDates: true,
+                showExcerpts: false,
+                showAuthor: false
+            });
+
+            // Test Grid Only Layout
+            const renderer2 = new ContentRenderer('test-grid-only');
+            await renderer2.renderStoriesReel({
+                layout: 'grid-only',
+                count: 6,
+                title: 'All Stories',
+                showTitle: true,
+                showDates: true,
+                showExcerpts: true,
+                showAuthor: true
+            });
+
+            // Test List Layout
+            const renderer3 = new ContentRenderer('test-list');
+            await renderer3.renderStoriesReel({
+                layout: 'list',
+                count: 4,
+                title: 'Story List',
+                showTitle: true,
+                showDates: true,
+                showExcerpts: true,
+                showAuthor: true
+            });
+        });
+    </script>
+</body>
+</html> 

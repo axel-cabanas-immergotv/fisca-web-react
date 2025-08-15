@@ -1,0 +1,202 @@
+/* Estilos específicos para el dropzone de featured image en la sidebar */
+
+#featured-image-dropzone .simple-dropzone {
+    border: 2px dashed #ced4da;
+    border-radius: 8px;
+    padding: 15px;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    background: #f8f9fa;
+    margin-top: 8px;
+    min-height: 120px;
+    max-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Upload area - full width when no image */
+#featured-image-dropzone .dropzone-upload-area {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+/* Preview area - only image and remove button */
+#featured-image-dropzone .dropzone-preview {
+    width: 100%;
+    text-align: center;
+    display: none;
+    visibility: hidden;
+    height: 0;
+    overflow: hidden;
+    align-items: center;
+    justify-content: center;
+}
+
+#featured-image-dropzone .dropzone-preview.show {
+    display: block;
+    visibility: visible;
+    height: auto;
+    overflow: visible;
+}
+
+/* Container styles */
+#featured-image-dropzone {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#featured-image-dropzone .simple-dropzone:hover {
+    border-color: #007bff;
+    background-color: #e3f2fd;
+}
+
+#featured-image-dropzone .simple-dropzone.dragover {
+    border-color: #007bff;
+    background-color: #e3f2fd;
+    transform: scale(1.02);
+}
+
+#featured-image-dropzone .dropzone-upload-area {
+    width: 100%;
+}
+
+#featured-image-dropzone .dropzone-upload-area i {
+    font-size: 1.5rem;
+    color: #6c757d;
+    margin-bottom: 8px;
+}
+
+#featured-image-dropzone .dropzone-upload-area p {
+    margin: 0;
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+#featured-image-dropzone .dropzone-upload-area strong {
+    color: #495057;
+}
+
+#featured-image-dropzone .dropzone-upload-area span {
+    color: #007bff;
+    cursor: pointer;
+}
+
+#featured-image-dropzone .dropzone-upload-area small {
+    color: #999;
+    font-size: 0.8rem;
+    margin-top: 5px;
+    display: block;
+}
+
+#featured-image-dropzone .dropzone-preview {
+    width: 100%;
+    text-align: center;
+    display: none;
+    min-height: 120px;
+    max-height: 180px;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    visibility: hidden;
+    opacity: 0;
+}
+
+#featured-image-dropzone .dropzone-preview img {
+    max-width: 100%;
+    max-height: 120px;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    object-fit: cover;
+    display: none;
+    width: auto;
+    height: auto;
+    visibility: hidden;
+    opacity: 0;
+}
+
+#featured-image-dropzone .dropzone-preview.show {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    flex-direction: column;
+}
+
+#featured-image-dropzone .dropzone-preview.show img {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+
+
+#featured-image-dropzone .dropzone-preview button {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: #dc3545;
+    border: 2px solid #fff;
+    color: white;
+    font-size: 12px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    z-index: 10;
+}
+
+#featured-image-dropzone .dropzone-preview button:hover {
+    background: #c82333;
+}
+
+#featured-image-dropzone .dropzone-preview button.show {
+    display: flex !important;
+}
+
+#featured-image-dropzone .dropzone-preview small {
+    color: #6c757d;
+    font-size: 0.8rem;
+    margin-top: 5px;
+    display: block;
+    word-break: break-word;
+}
+
+#featured-image-dropzone .dropzone-loading {
+    text-align: center;
+    padding: 10px;
+}
+
+#featured-image-dropzone .dropzone-loading p {
+    margin: 8px 0 0 0;
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+/* Responsive adjustments for sidebar */
+@media (max-width: 768px) {
+    #featured-image-dropzone .simple-dropzone {
+        padding: 10px;
+        min-height: 100px;
+    }
+    
+    #featured-image-dropzone .dropzone-preview img {
+        max-height: 120px;
+    }
+} 

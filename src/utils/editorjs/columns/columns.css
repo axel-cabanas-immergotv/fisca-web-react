@@ -1,0 +1,600 @@
+/**
+ * Columns Block Styles for Editor.js
+ * Responsive column layouts with visual distinction
+ */
+
+/* Main block container */
+.cdx-columns-block {
+  border: 2px dashed #e0e0e0;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 16px 0;
+  background: #fafafa;
+  position: relative;
+  transition: all 0.3s ease;
+  /* Normal z-index, no interference with other blocks */
+  z-index: auto;
+}
+
+.cdx-columns-block:hover {
+  border-color: #4285f4;
+  background: #f8f9ff;
+}
+
+.cdx-columns-block::before {
+  content: 'COLUMNS BLOCK';
+  position: absolute;
+  top: -8px;
+  left: 12px;
+  background: #4285f4;
+  color: white;
+  padding: 2px 8px;
+  font-size: 10px;
+  font-weight: bold;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+}
+
+/* Standard Editor.js Settings Panel */
+.cdx-columns-settings-panel {
+  width: 400px;
+  overflow-y: auto;
+  padding: 0;
+}
+
+.cdx-settings-container {
+  padding: 12px;
+}
+
+.cdx-settings-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+
+
+.cdx-setting-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.cdx-setting-row:last-child {
+  border-bottom: none;
+}
+
+.cdx-setting-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #333;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.cdx-setting-label small {
+  font-size: 11px;
+  color: #666;
+  font-weight: normal;
+}
+
+.cdx-setting-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cdx-setting-select {
+  padding: 6px 8px;
+  border: 1px solid #d0d0d0;
+  border-radius: 4px;
+  font-size: 12px;
+  background: white;
+  cursor: pointer;
+  min-width: 60px;
+}
+
+.cdx-setting-select:focus {
+  outline: none;
+  border-color: #4285f4;
+  box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+}
+
+.cdx-setting-select:hover {
+  border-color: #4285f4;
+}
+
+/* Number of columns setting */
+.cdx-column-count-setting {
+  background: #f8f9fa;
+  border-radius: 6px;
+  padding: 16px 12px;
+  margin-bottom: 16px;
+  border: 1px solid #e9ecef;
+}
+
+.cdx-column-count-setting .cdx-setting-label {
+  font-size: 14px;
+  color: #333;
+}
+
+.cdx-column-count-select {
+  font-weight: 600;
+  background: #fff;
+  border: 2px solid #4285f4;
+  color: #4285f4;
+}
+
+.cdx-column-count-select:focus {
+  box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.1);
+}
+
+/* Column separators */
+.cdx-column-separator {
+  font-weight: bold;
+  color: #666;
+  margin: 0 4px;
+}
+
+/* Total indicator */
+.cdx-total-indicator {
+  margin-left: 8px;
+  font-size: 11px;
+  color: #666;
+}
+
+.cdx-total-indicator.warning {
+  color: #ff6b6b;
+}
+
+
+
+/* Columns Container */
+.cdx-columns-container {
+  display: grid;
+  gap: 16px;
+  min-height: 120px;
+  /* Allow popovers to escape but maintain layout */
+  overflow: visible;
+  position: relative;
+  z-index: auto;
+  
+  /* Default 2-column layout (fallback) */
+  grid-template-columns: 1fr 1fr;
+}
+
+/* Dynamic column layouts */
+.cdx-columns-container.cdx-columns-2 {
+  grid-template-columns: 1fr 1fr;
+}
+
+.cdx-columns-container.cdx-columns-3 {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.cdx-columns-container.cdx-columns-4 {
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.cdx-columns-container.cdx-columns-5 {
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.cdx-columns-container.cdx-columns-6 {
+  grid-template-columns: repeat(6, 1fr);
+}
+
+/* Column Elements */
+.cdx-column {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  /* Allow popovers to escape while maintaining column boundaries */
+  overflow: visible;
+  transition: all 0.3s ease;
+  min-height: 100px;
+  position: relative;
+  z-index: auto;
+}
+
+.cdx-column:hover {
+  border-color: #4285f4;
+  box-shadow: 0 2px 8px rgba(66, 133, 244, 0.15);
+}
+
+.cdx-column-header {
+  background: #f8f9fa;
+  padding: 8px 12px;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 12px;
+  font-weight: 600;
+  color: #666;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cdx-column-content {
+  padding: 8px;
+  min-height: 120px;
+  font-size: 14px;
+  /* Allow popovers to escape while maintaining content flow */
+  overflow: visible;
+  position: relative;
+  z-index: auto;
+  line-height: 1.6;
+  color: #333;
+  border-radius: 4px;
+}
+
+.cdx-column-content:focus {
+  outline: none;
+  background: #fff;
+}
+
+/* Styles for nested Editor.js instances */
+.cdx-column-content .codex-editor {
+  margin: 0;
+  padding: 0;
+  position: relative;
+  z-index: auto; /* Normal flow within columns */
+  display: block !important;
+  visibility: visible !important;
+}
+
+.cdx-column-content .codex-editor__redactor {
+  padding: 8px !important;
+  position: relative;
+  z-index: auto;
+  display: block !important;
+  visibility: visible !important;
+}
+
+.cdx-column-content .ce-block__content {
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.cdx-column-content .ce-block {
+  padding: 4px 0 !important;
+  position: relative;
+  z-index: auto;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Critical: Ensure toolbars float above everything */
+.cdx-column-content .ce-toolbar {
+  margin-left: 0 !important;
+  position: absolute !important;
+  z-index: 9999 !important; /* Very high z-index to float above all elements */
+}
+
+.cdx-column-content .ce-toolbar__plus {
+  left: 8px !important;
+  z-index: 9999 !important;
+}
+
+.cdx-column-content .ce-toolbar__settings-btn {
+  right: 8px !important;
+  z-index: 9999 !important;
+}
+
+/* Ensure toolbox and other floating elements are above everything BUT ONLY within columns */
+.cdx-column-content .ce-toolbox {
+  z-index: 1000 !important;
+  position: absolute !important;
+}
+
+.cdx-column-content .ce-inline-toolbar {
+  z-index: 1000 !important;
+  position: absolute !important;
+}
+
+.cdx-column-content .ce-conversion-toolbar {
+  z-index: 1000 !important;
+  position: absolute !important;
+}
+
+.cdx-column-content .ce-settings {
+  z-index: 1000 !important;
+  position: absolute !important;
+}
+
+/* CRITICAL: Ensure popover elements float correctly within columns context */
+.cdx-column-content .ce-popover {
+  z-index: 1000 !important;
+  position: absolute !important;
+  min-width: 320px !important;
+  max-width: 600px !important;
+  width: auto !important;
+  max-height: 70vh !important;
+  overflow: visible !important;
+  border-radius: 8px !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+  border: 1px solid #e1e5e9 !important;
+  background: #fff !important;
+}
+
+.cdx-column-content .ce-popover__container {
+  max-height: 65vh !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  padding: 0 !important;
+}
+
+/* Custom scrollbar for column popover content */
+.cdx-column-content .ce-popover__container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.cdx-column-content .ce-popover__container::-webkit-scrollbar-track {
+  background: #f1f3f4;
+  border-radius: 3px;
+}
+
+.cdx-column-content .ce-popover__container::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.cdx-column-content .ce-popover__container::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Improve column popover items */
+.cdx-column-content .ce-popover-item {
+  padding: 12px 16px !important;
+  border-bottom: 1px solid #f0f0f0 !important;
+  transition: background-color 0.2s ease !important;
+}
+
+.cdx-column-content .ce-popover-item:last-child {
+  border-bottom: none !important;
+}
+
+/* Improve form elements inside column popovers */
+.cdx-column-content .ce-popover input,
+.cdx-column-content .ce-popover select,
+.cdx-column-content .ce-popover textarea {
+  width: 100% !important;
+  padding: 8px 12px !important;
+  border: 1px solid #ddd !important;
+  border-radius: 4px !important;
+  font-size: 14px !important;
+  margin: 4px 0 !important;
+}
+
+.cdx-column-content .ce-popover input:focus,
+.cdx-column-content .ce-popover select:focus,
+.cdx-column-content .ce-popover textarea:focus {
+  border-color: #0073aa !important;
+  outline: none !important;
+  box-shadow: 0 0 0 2px rgba(0, 115, 170, 0.1) !important;
+}
+
+/* Remove global selectors that interfere with other editors */
+
+.cdx-column-content .ce-toolbar__actions {
+  z-index: 1000 !important;
+}
+
+/* Empty column styles */
+.cdx-empty-column {
+  margin: 16px 0;
+  color: #999;
+  font-style: italic;
+  text-align: center;
+  padding: 20px;
+  border: 1px dashed #ddd;
+  border-radius: 4px;
+  background: #fafafa;
+}
+
+/* Responsive adjustments for column editors */
+@media (max-width: 768px) {
+  .cdx-column-content {
+    padding: 4px;
+    min-height: 80px;
+  }
+  
+  .cdx-column-content .codex-editor__redactor {
+    padding: 4px !important;
+  }
+  
+  .cdx-column-content .ce-toolbar__plus {
+    left: 4px !important;
+  }
+  
+  .cdx-column-content .ce-toolbar__settings-btn {
+    right: 4px !important;
+  }
+}
+
+/* Ensure proper nesting hierarchy */
+.cdx-column-content h1 { font-size: 1.8em; }
+.cdx-column-content h2 { font-size: 1.6em; }
+.cdx-column-content h3 { font-size: 1.4em; }
+.cdx-column-content h4 { font-size: 1.2em; }
+.cdx-column-content h5 { font-size: 1.1em; }
+.cdx-column-content h6 { font-size: 1em; }
+
+/* Block spacing within columns */
+.cdx-column-content .cdx-block {
+  margin-bottom: 8px;
+}
+
+.cdx-column-content .cdx-block:last-child {
+  margin-bottom: 0;
+}
+
+/* Responsive Grid Classes */
+/* Extra Large Devices (≥1470px) */
+@media (min-width: 1470px) {
+  .cdx-xl-1-11 { grid-template-columns: 1fr 11fr; }
+  .cdx-xl-2-10 { grid-template-columns: 2fr 10fr; }
+  .cdx-xl-3-9 { grid-template-columns: 3fr 9fr; }
+  .cdx-xl-4-8 { grid-template-columns: 4fr 8fr; }
+  .cdx-xl-5-7 { grid-template-columns: 5fr 7fr; }
+  .cdx-xl-6-6 { grid-template-columns: 6fr 6fr; }
+  .cdx-xl-7-5 { grid-template-columns: 7fr 5fr; }
+  .cdx-xl-8-4 { grid-template-columns: 8fr 4fr; }
+  .cdx-xl-9-3 { grid-template-columns: 9fr 3fr; }
+  .cdx-xl-10-2 { grid-template-columns: 10fr 2fr; }
+  .cdx-xl-11-1 { grid-template-columns: 11fr 1fr; }
+  .cdx-xl-12-12 { grid-template-columns: 1fr; grid-template-rows: auto auto; }
+}
+
+/* Large Devices (≥1200px) */
+@media (min-width: 1200px) and (max-width: 1469px) {
+  .cdx-lg-1-11 { grid-template-columns: 1fr 11fr; }
+  .cdx-lg-2-10 { grid-template-columns: 2fr 10fr; }
+  .cdx-lg-3-9 { grid-template-columns: 3fr 9fr; }
+  .cdx-lg-4-8 { grid-template-columns: 4fr 8fr; }
+  .cdx-lg-5-7 { grid-template-columns: 5fr 7fr; }
+  .cdx-lg-6-6 { grid-template-columns: 6fr 6fr; }
+  .cdx-lg-7-5 { grid-template-columns: 7fr 5fr; }
+  .cdx-lg-8-4 { grid-template-columns: 8fr 4fr; }
+  .cdx-lg-9-3 { grid-template-columns: 9fr 3fr; }
+  .cdx-lg-10-2 { grid-template-columns: 10fr 2fr; }
+  .cdx-lg-11-1 { grid-template-columns: 11fr 1fr; }
+  .cdx-lg-12-12 { grid-template-columns: 1fr; grid-template-rows: auto auto; }
+}
+
+/* Medium Devices (≥992px) */
+@media (min-width: 992px) and (max-width: 1199px) {
+  .cdx-md-1-11 { grid-template-columns: 1fr 11fr; }
+  .cdx-md-2-10 { grid-template-columns: 2fr 10fr; }
+  .cdx-md-3-9 { grid-template-columns: 3fr 9fr; }
+  .cdx-md-4-8 { grid-template-columns: 4fr 8fr; }
+  .cdx-md-5-7 { grid-template-columns: 5fr 7fr; }
+  .cdx-md-6-6 { grid-template-columns: 6fr 6fr; }
+  .cdx-md-7-5 { grid-template-columns: 7fr 5fr; }
+  .cdx-md-8-4 { grid-template-columns: 8fr 4fr; }
+  .cdx-md-9-3 { grid-template-columns: 9fr 3fr; }
+  .cdx-md-10-2 { grid-template-columns: 10fr 2fr; }
+  .cdx-md-11-1 { grid-template-columns: 11fr 1fr; }
+  .cdx-md-12-12 { grid-template-columns: 1fr; grid-template-rows: auto auto; }
+}
+
+/* Small Devices (≥768px) */
+@media (min-width: 768px) and (max-width: 991px) {
+  .cdx-sm-1-11 { grid-template-columns: 1fr 11fr; }
+  .cdx-sm-2-10 { grid-template-columns: 2fr 10fr; }
+  .cdx-sm-3-9 { grid-template-columns: 3fr 9fr; }
+  .cdx-sm-4-8 { grid-template-columns: 4fr 8fr; }
+  .cdx-sm-5-7 { grid-template-columns: 5fr 7fr; }
+  .cdx-sm-6-6 { grid-template-columns: 6fr 6fr; }
+  .cdx-sm-7-5 { grid-template-columns: 7fr 5fr; }
+  .cdx-sm-8-4 { grid-template-columns: 8fr 4fr; }
+  .cdx-sm-9-3 { grid-template-columns: 9fr 3fr; }
+  .cdx-sm-10-2 { grid-template-columns: 10fr 2fr; }
+  .cdx-sm-11-1 { grid-template-columns: 11fr 1fr; }
+  .cdx-sm-12-12 { grid-template-columns: 1fr; grid-template-rows: auto auto; }
+}
+
+/* Extra Small Devices (<768px) */
+@media (max-width: 767px) {
+  .cdx-xs-1-11 { grid-template-columns: 1fr 11fr; }
+  .cdx-xs-2-10 { grid-template-columns: 2fr 10fr; }
+  .cdx-xs-3-9 { grid-template-columns: 3fr 9fr; }
+  .cdx-xs-4-8 { grid-template-columns: 4fr 8fr; }
+  .cdx-xs-5-7 { grid-template-columns: 5fr 7fr; }
+  .cdx-xs-6-6 { grid-template-columns: 6fr 6fr; }
+  .cdx-xs-7-5 { grid-template-columns: 7fr 5fr; }
+  .cdx-xs-8-4 { grid-template-columns: 8fr 4fr; }
+  .cdx-xs-9-3 { grid-template-columns: 9fr 3fr; }
+  .cdx-xs-10-2 { grid-template-columns: 10fr 2fr; }
+  .cdx-xs-11-1 { grid-template-columns: 11fr 1fr; }
+  .cdx-xs-12-12 { grid-template-columns: 1fr; grid-template-rows: auto auto; }
+}
+
+/* Gutter Classes */
+.cdx-gutter-none-none { gap: 0; }
+.cdx-gutter-small-small { gap: 8px; }
+.cdx-gutter-default-default { gap: 16px; }
+.cdx-gutter-large-large { gap: 24px; }
+
+.cdx-gutter-none-small .cdx-column:first-child { margin-right: 0; }
+.cdx-gutter-none-small .cdx-column:last-child { margin-left: 4px; }
+
+.cdx-gutter-small-none .cdx-column:first-child { margin-right: 4px; }
+.cdx-gutter-small-none .cdx-column:last-child { margin-left: 0; }
+
+.cdx-gutter-default-small .cdx-column:first-child { margin-right: 8px; }
+.cdx-gutter-default-small .cdx-column:last-child { margin-left: 4px; }
+
+.cdx-gutter-small-default .cdx-column:first-child { margin-right: 4px; }
+.cdx-gutter-small-default .cdx-column:last-child { margin-left: 8px; }
+
+.cdx-gutter-large-default .cdx-column:first-child { margin-right: 12px; }
+.cdx-gutter-large-default .cdx-column:last-child { margin-left: 8px; }
+
+.cdx-gutter-default-large .cdx-column:first-child { margin-right: 8px; }
+.cdx-gutter-default-large .cdx-column:last-child { margin-left: 12px; }
+
+/* Editor Enhancement */
+.cdx-columns-block .ce-block__content {
+  max-width: none !important;
+}
+
+
+
+
+
+/* Animation for settings panel */
+.cdx-settings-content {
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Focus states */
+.cdx-column-content:focus {
+  background: #fff;
+  box-shadow: inset 0 0 0 2px rgba(66, 133, 244, 0.2);
+  border-radius: 4px;
+}
+
+/* Responsive adjustments for settings panel */
+@media (max-width: 768px) {
+  .cdx-columns-header,
+  .cdx-setting-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  
+  .cdx-column-label {
+    text-align: left;
+    margin-top: 8px;
+  }
+  
+  .cdx-setting-row select {
+    width: 100%;
+  }
+  
+  .cdx-settings-actions {
+    flex-direction: column;
+  }
+  
+  .cdx-btn-primary,
+  .cdx-btn-secondary {
+    width: 100%;
+  }
+} 

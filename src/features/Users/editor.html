@@ -1,0 +1,88 @@
+<!-- User Modal -->
+<div x-show="usersModule?.showUserModal" 
+     x-transition
+     class="modal" 
+     :class="{ 'd-block': usersModule?.showUserModal }"
+     style="background-color: rgba(0, 0, 0, 0.5);"
+     @click.self="usersModule.closeModal()"
+     x-cloak>
+    <div class="modal-dialog modal-lg" @click.stop>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" x-text="usersModule?.isEditing ? 'Edit User' : 'Create New User'"></h5>
+                <button type="button" class="btn-close" @click="usersModule.closeModal()"></button>
+            </div>
+            <div class="modal-body">
+                <form @submit.prevent="usersModule.save()">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="user-first-name" class="form-label">First Name *</label>
+                                <input type="text" class="form-control" id="user-first-name" 
+                                       x-model="usersModule.userForm.first_name" 
+                                       placeholder="Enter first name" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="user-last-name" class="form-label">Last Name *</label>
+                                <input type="text" class="form-control" id="user-last-name" 
+                                       x-model="usersModule.userForm.last_name" 
+                                       placeholder="Enter last name" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="user-email" class="form-label">Email *</label>
+                        <input type="email" class="form-control" id="user-email" 
+                               x-model="usersModule.userForm.email" 
+                               placeholder="user@example.com" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="user-username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="user-username" 
+                               x-model="usersModule.userForm.username" 
+                               placeholder="Optional username">
+                    </div>
+                    <div class="mb-3">
+                        <label for="user-password" class="form-label">
+                            Password <span x-show="!usersModule.isEditing">*</span>
+                            <span x-show="usersModule.isEditing" class="text-muted">(leave empty to keep current)</span>
+                        </label>
+                        <input type="password" class="form-control" id="user-password" 
+                               x-model="usersModule.userForm.password" 
+                               placeholder="Enter password" 
+                               x-bind:required="!usersModule.isEditing">
+                    </div>
+                    <div class="mb-3">
+                        <label for="user-role" class="form-label">Role *</label>
+                        <select class="form-select" id="user-role" x-model="usersModule.userForm.role_id" required>
+                            <option value="">Select Role</option>
+                            <template x-for="role in usersModule.availableRoles" :key="role.id">
+                                <option :value="role.id" x-text="role.display_name"></option>
+                            </template>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="user-status" class="form-label">Status</label>
+                        <select class="form-select" id="user-status" x-model="usersModule.userForm.status">
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="user-affiliates" class="form-label">Affiliates</label>
+                        <div class="affiliates-selector" id="user-affiliates"></div>
+                        <small class="form-text text-muted">Search and select affiliates this user can access</small>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @click="usersModule.closeModal()">Cancel</button>
+                <button type="button" class="btn btn-primary" @click="usersModule.save()">
+                    <span x-text="usersModule?.isEditing ? 'Update' : 'Create'"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div> 

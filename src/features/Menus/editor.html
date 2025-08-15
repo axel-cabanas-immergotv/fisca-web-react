@@ -1,0 +1,238 @@
+<!-- Menu Editor -->
+<div x-show="currentSection === 'menu-editor'" class="page-editor-container">
+    <!-- Editor Header -->
+    <div class="editor-header">
+        <div class="editor-header-left">
+            <button class="btn btn-link editor-back-btn" @click="menusModule.back()">
+                <i class="fas fa-chevron-left me-2"></i>BACK
+            </button>
+            <h1 class="editor-title" x-text="menusModule.currentMenu.id ? 'Edit Menu' : 'Create New Menu'"></h1>
+        </div>
+        
+        <div class="editor-header-right">
+            <button class="btn btn-primary" @click="menusModule.save()">
+                <i class="fas fa-save me-1"></i>SAVE MENU
+            </button>
+        </div>
+    </div>
+
+    <!-- Editor Layout -->
+    <div class="editor-layout">
+        <!-- Main Editor Area -->
+        <div class="editor-main" style="height: 75vh; overflow-y: auto; overflow-x: hidden;">
+            <div class="menu-editor-content" style="overflow-y: auto; overflow-x: hidden;">
+                <!-- Menu Items -->
+                <div class="menu-items-section">
+                    <div class="d-flex justify-content-between align-items-center mb-3 p-2">
+                        <h5>Menu Items</h5>
+                        <div>
+                            <button class="btn btn-sm btn-outline-secondary me-2" @click="menusModule.debugCache(); menusModule.debugDOM()" title="Debug Info">
+                                <i class="fas fa-bug"></i>
+                            </button>
+                            <button class="btn btn-sm btn-primary" @click="menusModule.addMenuItem()">
+                                <i class="fas fa-plus me-1"></i>Add Item
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="menu-items-sortable" class="menu-items-list">
+                        <template x-for="(item, index) in menusModule.currentMenu.links" :key="item.id || index">
+                            <div class="menu-item" 
+                                 x-bind:data-id="item.id" 
+                                 x-bind:data-index="index" 
+                                 x-bind:data-item-json="JSON.stringify(item)"
+                                 data-level="0">
+                                <div class="menu-item-content">
+                                    <div class="menu-item-handle">
+                                        <i class="fas fa-grip-vertical"></i>
+                                    </div>
+                                    <div class="menu-item-info flex-grow-1">
+                                        <div class="menu-item-title">
+                                            <span x-text="item.title || 'Untitled'"></span>
+                                        </div>
+                                        <div class="menu-item-url text-muted">
+                                            <span x-text="item.url || 'No URL'"></span>
+                                        </div>
+                                    </div>
+                                    <div class="menu-item-actions">
+                                        <button class="btn btn-sm btn-outline-primary me-1" 
+                                                @click="menusModule.editMenuItem(index)"
+                                                title="Edit Item">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-success me-1" 
+                                                @click="menusModule.addSubMenuItem(index)"
+                                                title="Add Sub Item">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-danger" 
+                                                @click="menusModule.removeMenuItem(index)"
+                                                title="Remove Item">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <!-- Sub Items -->
+                                <div class="menu-sub-items" x-show="item.children && item.children.length > 0">
+                                    <div class="sub-items-sortable" x-bind:data-parent="item.id">
+                                        <template x-for="(subItem, subIndex) in item.children" :key="subItem.id || subIndex">
+                                            <div class="menu-item menu-sub-item" 
+                                                 x-bind:data-id="subItem.id" 
+                                                 x-bind:data-index="subIndex" 
+                                                 x-bind:data-item-json="JSON.stringify(subItem)"
+                                                 data-level="1">
+                                                <div class="menu-item-content">
+                                                    <div class="menu-item-handle">
+                                                        <i class="fas fa-grip-vertical"></i>
+                                                    </div>
+                                                    <div class="menu-item-info flex-grow-1">
+                                                        <div class="menu-item-title">
+                                                            <span x-text="subItem.title || 'Untitled'"></span>
+                                                        </div>
+                                                        <div class="menu-item-url text-muted">
+                                                            <span x-text="subItem.url || 'No URL'"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="menu-item-actions">
+                                                        <button class="btn btn-sm btn-outline-primary me-1" 
+                                                                @click="menusModule.editSubMenuItem(index, subIndex)"
+                                                                title="Edit Sub Item">
+                                                            <i class="fas fa-edit"></i>
+                                                        </button>
+                                                        <button class="btn btn-sm btn-outline-danger" 
+                                                                @click="menusModule.removeSubMenuItem(index, subIndex)"
+                                                                title="Remove Sub Item">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                    
+                    <div x-show="!menusModule.currentMenu.links || menusModule.currentMenu.links.length === 0" 
+                         class="text-center py-4 text-muted">
+                        <i class="fas fa-bars fa-2x mb-2"></i>
+                        <p>No menu items yet. Click "Add Item" to get started.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Sidebar -->
+        <div class="editor-sidebar">
+            <div class="sidebar-panel">
+                <!-- Menu Properties -->
+                <div class="panel-section">
+                    <h6 class="panel-title">MENU PROPERTIES</h6>
+                    
+                    <div class="form-group mb-3">
+                        <label class="form-label">MENU TITLE</label>
+                        <input type="text" 
+                               class="form-control" 
+                               x-model="menusModule.currentMenu.title"
+                               placeholder="Enter menu title">
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label class="form-label">PLATFORM</label>
+                        <select class="form-control" x-model="menusModule.currentMenu.platform">
+                            <option value="Web">Web</option>
+                            <option value="Android">Android</option>
+                            <option value="iOS">iOS</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label class="form-label">STATUS</label>
+                        <select class="form-control" x-model="menusModule.currentMenu.status">
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label class="form-label">SORT ORDER</label>
+                        <input type="number" 
+                               class="form-control" 
+                               x-model="menusModule.currentMenu.sort_order"
+                               placeholder="0">
+                    </div>
+                </div>
+
+                <!-- Help Panel -->
+                <div class="panel-section">
+                    <h6 class="panel-title">MENU HELP</h6>
+                    <div class="help-content">
+                        <p class="small text-muted">
+                            Create hierarchical navigation menus with up to 3 levels:
+                        </p>
+                        <ul class="small text-muted">
+                            <li>Main items (top level)</li>
+                            <li>Sub items (dropdowns)</li>
+                            <li>Sub-sub items (nested dropdowns)</li>
+                        </ul>
+                        <p class="small text-muted">
+                            Drag and drop items to reorder them or move between levels.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Menu Item Modal -->
+<div x-show="menusModule?.showMenuItemModal" 
+     :class="{'d-flex': menusModule?.showMenuItemModal, 'd-none': !menusModule?.showMenuItemModal}"
+     class="modal fade show" 
+     style="background: rgba(0,0,0,0.4); backdrop-filter: blur(6px); align-items: center; justify-content: center; z-index: 1050; min-height: 100vh;"
+     x-transition:enter="transition ease-out duration-300"
+     x-transition:enter-start="opacity-0"
+     x-transition:enter-end="opacity-100"
+     x-transition:leave="transition ease-in duration-200"
+     x-transition:leave-start="opacity-100"
+     x-transition:leave-end="opacity-0">
+    <div class="modal-dialog modal-dialog-centered modal-lg" style="max-width: 800px; width: 100%;" @click.stop>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" x-text="menusModule?.editingMode === 'edit' ? 'Edit Menu Item' : 'Add Menu Item'"></h5>
+                <button type="button" class="btn-close" @click="menusModule.hideMenuItemModal()"></button>
+            </div>
+            <div class="modal-body">
+                <form @submit.prevent="menusModule.saveMenuItem()">
+                    <div class="mb-3">
+                        <label for="menu-item-title" class="form-label">Title *</label>
+                        <input type="text" class="form-control" id="menu-item-title" 
+                               x-model="menusModule.editingItem.title" 
+                               placeholder="Menu item title" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="menu-item-url" class="form-label">URL *</label>
+                        <input type="text" class="form-control" id="menu-item-url" 
+                               x-model="menusModule.editingItem.url" 
+                               placeholder="https://example.com or /page-slug" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="menu-item-target" class="form-label">Link Target</label>
+                        <select class="form-select" id="menu-item-target" x-model="menusModule.editingItem.target">
+                            <option value="_self">Same Window</option>
+                            <option value="_blank">New Window</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @click="menusModule.hideMenuItemModal()">Cancel</button>
+                <button type="button" class="btn btn-primary" @click="menusModule.saveMenuItem()">
+                    <span x-text="menusModule?.editingMode === 'edit' ? 'Update' : 'Add'"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div> 

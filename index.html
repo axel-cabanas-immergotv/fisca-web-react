@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Web Editor CMS</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Editor.js CSS -->
+    <link rel="stylesheet" href="/src/utils/editorjs/columns/columns.css">
+    <link rel="stylesheet" href="/src/utils/editorjs/advunit/advunit.css">
+    <link rel="stylesheet" href="/src/utils/editorjs/storiesreel/storiesreel.css">
+  </head>
+  <body>
+    <div id="root"></div>
+    
+    <!-- Editor.js Core Libraries with specific versions -->
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@2.29.1/dist/editorjs.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/header@2.7.0/dist/header.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/paragraph@2.11.4/dist/paragraph.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/list@1.9.0/dist/list.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/quote@2.6.0/dist/quote.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/table@2.3.0/dist/table.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/delimiter@1.4.0/dist/delimiter.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/simple-image@1.6.0/dist/simple-image.umd.min.js"></script>
+    
+    <!-- Additional Editor.js tools -->
+    <script>
+      // Alias for ImageTool (simple-image)
+      window.ImageTool = window.SimpleImage;
+      
+      // Text align functionality (basic implementation)
+      window.TextAlign = class {
+        static get isInline() { return true; }
+        static get title() { return 'Text Align'; }
+        static get toolbox() { 
+          return { 
+            title: 'Text Align',
+            icon: '<svg width="20" height="20"><path d="M3 4h14v2H3V4zm0 4h10v2H3V8zm0 4h14v2H3v-2zm0 4h10v2H3v-2z"/></svg>'
+          }; 
+        }
+        constructor() {}
+        render() { return document.createElement('div'); }
+        save() { return {}; }
+      };
+      
+      console.log('✅ Editor.js core dependencies loaded');
+      console.log('Available globals:', {
+        EditorJS: typeof EditorJS,
+        Header: typeof Header,
+        Paragraph: typeof Paragraph,
+        List: typeof List,
+        Quote: typeof Quote,
+        Table: typeof Table,
+        Delimiter: typeof Delimiter,
+        ImageTool: typeof ImageTool,
+        TextAlign: typeof TextAlign
+      });
+    </script>
+    
+    <!-- Custom Editor.js Tools -->
+    <script src="/src/utils/editorjs/columns/columns-global.js"></script>
+    <script src="/src/utils/editorjs/advunit/advunit-global.js"></script>
+    <script src="/src/utils/editorjs/storiesreel/storiesreel-global.js"></script>
+    
+    <!-- Editor Configuration -->
+    <script src="/src/components/editorConfig.js"></script>
+    
+    <!-- React App -->
+    <script type="module" src="/src/main.jsx"></script>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

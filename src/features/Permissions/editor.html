@@ -1,0 +1,137 @@
+<!-- Permissions Editor -->
+<div x-show="currentSection === 'permissions-editor'" class="page-editor-container">
+    <!-- Editor Header -->
+    <div class="editor-header">
+        <div class="editor-header-left">
+            <button class="btn btn-link editor-back-btn" @click="permissionsModule.back()">
+                <i class="fas fa-chevron-left me-2"></i>BACK
+            </button>
+            <h1 class="editor-title">Permission Details</h1>
+        </div>
+    </div>
+
+    <!-- Editor Layout -->
+    <div class="editor-layout">
+        <!-- Main Editor Area -->
+        <div class="editor-main">
+            <div class="permission-details-section">
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Permissions are system-defined and cannot be modified through the interface.
+                    Use roles to assign permissions to users.
+                </div>
+
+                <!-- Permission Information -->
+                <div class="card" x-show="permissionsModule.currentPermission">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Permission Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Name</label>
+                                    <p class="form-control-plaintext" x-text="permissionsModule.currentPermission?.name"></p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Display Name</label>
+                                    <p class="form-control-plaintext" x-text="permissionsModule.currentPermission?.display_name"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Entity</label>
+                                    <p class="form-control-plaintext text-capitalize" x-text="permissionsModule.currentPermission?.entity"></p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Action</label>
+                                    <p class="form-control-plaintext text-capitalize" x-text="permissionsModule.currentPermission?.action"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Roles with this Permission -->
+                <div class="card mt-4" x-show="permissionsModule.rolesWithPermission">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Roles with this Permission</h5>
+                    </div>
+                    <div class="card-body">
+                        <div x-show="permissionsModule.rolesWithPermission?.length > 0">
+                            <template x-for="role in permissionsModule.rolesWithPermission" :key="role.id">
+                                <span class="badge bg-primary me-2 mb-2" x-text="role.display_name"></span>
+                            </template>
+                        </div>
+                        <div x-show="!permissionsModule.rolesWithPermission?.length" class="text-muted">
+                            <i class="fas fa-info-circle me-2"></i>
+                            No roles currently have this permission.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Permission Modal -->
+<div x-show="permissionsModule?.showPermissionModal" 
+     x-transition
+     class="modal" 
+     :class="{ 'd-block': permissionsModule?.showPermissionModal }"
+     style="background-color: rgba(0, 0, 0, 0.5);"
+     @click.self="permissionsModule.closeModal()"
+     x-cloak>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" @click.stop>
+            <div class="modal-header">
+                <h5 class="modal-title" x-text="permissionsModule?.isEditingPermission ? 'Edit Permission' : 'Create New Permission'"></h5>
+                <button type="button" class="btn-close" @click="permissionsModule.closeModal()"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Permissions are system-defined and should be managed programmatically.
+                </div>
+                <form @submit.prevent="permissionsModule.save()">
+                    <div class="mb-3">
+                        <label for="permissionName" class="form-label">Name *</label>
+                        <input type="text" class="form-control" id="permissionName" 
+                               x-model="permissionsModule.permissionForm.name" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="permissionDisplayName" class="form-label">Display Name *</label>
+                        <input type="text" class="form-control" id="permissionDisplayName" 
+                               x-model="permissionsModule.permissionForm.display_name" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="permissionDescription" class="form-label">Description</label>
+                        <textarea class="form-control" id="permissionDescription" 
+                                  x-model="permissionsModule.permissionForm.description" readonly rows="3"></textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="permissionResource" class="form-label">Resource</label>
+                            <input type="text" class="form-control" id="permissionResource" 
+                                   x-model="permissionsModule.permissionForm.resource" readonly>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="permissionAction" class="form-label">Action</label>
+                            <input type="text" class="form-control" id="permissionAction" 
+                                   x-model="permissionsModule.permissionForm.action" readonly>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @click="permissionsModule.closeModal()">Close</button>
+            </div>
+        </div>
+    </div>
+</div> 

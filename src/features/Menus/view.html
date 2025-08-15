@@ -1,0 +1,124 @@
+<!-- Menu View Modal -->
+<div class="modal fade" 
+     x-show="menusModule.showMenuViewModal" 
+     x-transition:enter="fade-in" 
+     x-transition:leave="fade-out" 
+     id="menuViewModal" 
+     tabindex="-1">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Menu Details: <span x-text="menusModule.viewingMenu.title"></span></h5>
+                <button type="button" class="btn-close" @click="menusModule.closeMenuViewModal()"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <h6>Basic Information</h6>
+                        <table class="table table-borderless">
+                            <tr>
+                                <td><strong>Title:</strong></td>
+                                <td x-text="menusModule.viewingMenu.title"></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Platform:</strong></td>
+                                <td>
+                                    <span class="badge bg-info" x-text="menusModule.viewingMenu.platform"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Status:</strong></td>
+                                <td>
+                                    <span class="badge" 
+                                          :class="menusModule.viewingMenu.status === 'active' ? 'bg-success' : 'bg-secondary'"
+                                          x-text="menusModule.viewingMenu.status"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Sort Order:</strong></td>
+                                <td x-text="menusModule.viewingMenu.sort_order || 0"></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Total Items:</strong></td>
+                                <td>
+                                    <span class="badge bg-info" x-text="`${menusModule.getTotalMenuItems()} items`"></span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Menu Structure</h6>
+                        <div class="border rounded p-3" style="max-height: 300px; overflow-y: auto;">
+                            <div x-show="menusModule.viewingMenu.links && menusModule.viewingMenu.links.length > 0">
+                                <template x-for="(item, index) in menusModule.viewingMenu.links" :key="index">
+                                    <div class="mb-2">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-link text-muted me-2"></i>
+                                            <strong x-text="item.title"></strong>
+                                            <span x-show="item.target && item.target !== '_self'" 
+                                                  class="badge badge-sm bg-warning ms-2" 
+                                                  x-text="item.target"></span>
+                                            <i x-show="item.icon" :class="item.icon" class="ms-2"></i>
+                                        </div>
+                                        <div x-show="item.url" class="ms-3">
+                                            <small class="text-muted" x-text="item.url"></small>
+                                        </div>
+                                        
+                                        <!-- Sub items -->
+                                        <div x-show="item.children && item.children.length > 0" class="ms-4 mt-1">
+                                            <template x-for="(subItem, subIndex) in item.children" :key="subIndex">
+                                                <div class="mb-1">
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="fas fa-link text-muted me-2" style="font-size: 0.8em;"></i>
+                                                        <span x-text="subItem.title" style="font-size: 0.9em;"></span>
+                                                        <span x-show="subItem.target && subItem.target !== '_self'" 
+                                                              class="badge badge-sm bg-warning ms-2" 
+                                                              x-text="subItem.target"></span>
+                                                        <i x-show="subItem.icon" :class="subItem.icon" class="ms-2"></i>
+                                                    </div>
+                                                    <div x-show="subItem.url" class="ms-3">
+                                                        <small class="text-muted" x-text="subItem.url" style="font-size: 0.8em;"></small>
+                                                    </div>
+                                                    
+                                                    <!-- Sub-sub items -->
+                                                    <div x-show="subItem.children && subItem.children.length > 0" class="ms-4 mt-1">
+                                                        <template x-for="(subSubItem, subSubIndex) in subItem.children" :key="subSubIndex">
+                                                            <div class="mb-1">
+                                                                <div class="d-flex align-items-center">
+                                                                    <i class="fas fa-link text-muted me-2" style="font-size: 0.7em;"></i>
+                                                                    <span x-text="subSubItem.title" style="font-size: 0.8em;"></span>
+                                                                    <span x-show="subSubItem.target && subSubItem.target !== '_self'" 
+                                                                          class="badge badge-sm bg-warning ms-2" 
+                                                                          x-text="subSubItem.target"></span>
+                                                                    <i x-show="subSubItem.icon" :class="subSubItem.icon" class="ms-2"></i>
+                                                                </div>
+                                                                <div x-show="subSubItem.url" class="ms-3">
+                                                                    <small class="text-muted" x-text="subSubItem.url" style="font-size: 0.7em;"></small>
+                                                                </div>
+                                                            </div>
+                                                        </template>
+                                                    </div>
+                                                </div>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                            <em x-show="!menusModule.viewingMenu.links || menusModule.viewingMenu.links.length === 0" 
+                               class="text-muted">No menu items</em>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @click="menusModule.closeMenuViewModal()">Close</button>
+                <button type="button" 
+                        class="btn btn-primary" 
+                        @click="menusModule.editMenuFromView()">Edit Menu</button>
+                <button type="button" 
+                        class="btn btn-success" 
+                        @click="menusModule.previewMenuFromView()">Preview</button>
+            </div>
+        </div>
+    </div>
+</div> 

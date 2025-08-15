@@ -43,6 +43,12 @@ module.exports = (sequelize) => {
     ]
   });
 
+  // Define associations
+  UserAffiliate.associate = (models) => {
+    UserAffiliate.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' });
+    UserAffiliate.belongsTo(models.Affiliate, { foreignKey: 'affiliate_id', as: 'affiliate' });
+  };
+
   // Class methods
   UserAffiliate.findByUser = function(userId) {
     return this.findAll({

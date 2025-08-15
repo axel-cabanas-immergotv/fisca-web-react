@@ -151,6 +151,10 @@ Affiliate.belongsToMany(User, {
   as: 'users'
 });
 
+// Call associate functions for junction table models
+UserAffiliate.associate({ User, Affiliate });
+AffiliateMember.associate({ Affiliate });
+
 // AffiliateMember associations (for affiliate-to-affiliate relationships)
 Affiliate.belongsToMany(Affiliate, { 
   through: AffiliateMember, 

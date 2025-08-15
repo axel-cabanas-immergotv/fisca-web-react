@@ -82,6 +82,18 @@ module.exports = (sequelize) => {
     }
   });
 
+  // Define associations
+  AffiliateMember.associate = (models) => {
+    AffiliateMember.belongsTo(models.Affiliate, { 
+      foreignKey: 'from_affiliate_id', 
+      as: 'from_affiliate' 
+    });
+    AffiliateMember.belongsTo(models.Affiliate, { 
+      foreignKey: 'to_affiliate_id', 
+      as: 'to_affiliate' 
+    });
+  };
+
   // Instance methods
   AffiliateMember.prototype.hasPermission = function(permission) {
     const permissions = {

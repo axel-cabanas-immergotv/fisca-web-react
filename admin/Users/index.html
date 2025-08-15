@@ -1,0 +1,16 @@
+<!-- Users -->
+<div x-show="currentSection === 'users'" class="content-section">
+    <div class="content-header d-flex justify-content-between align-items-center">
+        <div>
+            <h1>Users</h1>
+            <p class="text-muted">Manage system users and their access</p>
+        </div>
+        <button class="btn btn-primary" @click="usersModule.new()" x-show="hasPermission('users.create')">
+            <i class="fas fa-plus me-2"></i>Add New User
+        </button>
+    </div>
+    
+    <div id="users-content">
+        <!-- Users content will be loaded here -->
+    </div>
+</div> 

@@ -1,0 +1,16 @@
+<!-- Categories -->
+<div x-show="currentSection === 'categories'" class="content-section">
+    <div class="content-header d-flex justify-content-between align-items-center">
+        <div>
+            <h1>Categories</h1>
+            <p class="text-muted">Organize your content with categories</p>
+        </div>
+        <button class="btn btn-primary" @click="categoriesModule.new()" x-show="hasPermission('categories.create')">
+            <i class="fas fa-plus me-2"></i>Add New Category
+        </button>
+    </div>
+    
+    <div id="categories-content">
+        <!-- Categories content will be loaded here -->
+    </div>
+</div> 

@@ -1,0 +1,136 @@
+<!-- Ciudadano Modal Editor -->
+<div x-show="ciudadanosModule?.showCiudadanoModal" class="modal-backdrop show">
+    <div class="modal modal-xl d-block">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form @submit.prevent="ciudadanosModule.save()">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            <span x-text="ciudadanosModule.isEditingCiudadano ? 'Edit Ciudadano' : 'Add New Ciudadano'"></span>
+                        </h5>
+                        <button type="button" class="btn-close" @click="ciudadanosModule.closeModal()"></button>
+                    </div>
+                    
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Nombre <span class="text-danger">*</span></label>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           x-model="ciudadanosModule.ciudadanoForm.nombre" 
+                                           required>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Apellido <span class="text-danger">*</span></label>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           x-model="ciudadanosModule.ciudadanoForm.apellido" 
+                                           required>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">DNI <span class="text-danger">*</span></label>
+                                    <input type="number" 
+                                           class="form-control" 
+                                           x-model="ciudadanosModule.ciudadanoForm.dni" 
+                                           required>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Mesa <span class="text-danger">*</span></label>
+                                    <select class="form-select" 
+                                            x-model="ciudadanosModule.ciudadanoForm.mesa_id" 
+                                            required>
+                                        <option value="">Select Mesa</option>
+                                        <template x-for="mesa in ciudadanosModule.availableMesas" :key="mesa.id">
+                                            <option :value="mesa.id" x-text="`${mesa.numero} (${mesa.escuela?.nombre || 'N/A'})`"></option>
+                                        </template>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Nacionalidad</label>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           x-model="ciudadanosModule.ciudadanoForm.nacionalidad"
+                                           placeholder="Argentina">
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Género</label>
+                                    <select class="form-select" x-model="ciudadanosModule.ciudadanoForm.genero">
+                                        <option value="">Select Género</option>
+                                        <option value="masculino">Masculino</option>
+                                        <option value="femenino">Femenino</option>
+                                        <option value="otro">Otro</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                    <label class="form-label">Domicilio</label>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           x-model="ciudadanosModule.ciudadanoForm.domicilio"
+                                           placeholder="Calle y número">
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Código Postal</label>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           x-model="ciudadanosModule.ciudadanoForm.codigo_postal"
+                                           placeholder="1000">
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Número de Orden</label>
+                                    <input type="number" 
+                                           class="form-control" 
+                                           x-model="ciudadanosModule.ciudadanoForm.numero_orden"
+                                           placeholder="Número en la mesa">
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Status</label>
+                                    <select class="form-select" x-model="ciudadanosModule.ciudadanoForm.status">
+                                        <option value="active">Active</option>
+                                        <option value="inactive">Inactive</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" @click="ciudadanosModule.closeModal()">
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <span x-text="ciudadanosModule.isEditingCiudadano ? 'Update' : 'Create'"></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div> 

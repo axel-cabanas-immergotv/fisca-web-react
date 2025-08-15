@@ -1,0 +1,18 @@
+<!-- Mesas -->
+<div x-show="currentSection === 'mesas'" class="content-section">
+    <div class="content-header d-flex justify-content-between align-items-center">
+        <div>
+            <h1>Mesas</h1>
+            <p class="text-muted">Manage voting tables in the system</p>
+        </div>
+        <button class="btn btn-primary" 
+                @click="mesasModule.new()" 
+                x-show="hasPermission('mesas.create')">
+            <i class="fas fa-plus me-2"></i>Add New Mesa
+        </button>
+    </div>
+    
+    <div id="mesas-content">
+        <!-- Content loads here -->
+    </div>
+</div> 

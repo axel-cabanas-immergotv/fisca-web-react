@@ -1,0 +1,16 @@
+<!-- Pages -->
+<div x-show="currentSection === 'pages'" class="content-section">
+    <div class="content-header d-flex justify-content-between align-items-center">
+        <div>
+            <h1>Pages</h1>
+            <p class="text-muted">Create and manage your pages</p>
+        </div>
+        <button class="btn btn-primary" @click="pagesModule.new()" x-show="hasPermission('pages.create')">
+            <i class="fas fa-plus me-2"></i>Add New Page
+        </button>
+    </div>
+    
+    <div id="pages-content">
+        <!-- Pages content will be loaded here -->
+    </div>
+</div> 

@@ -1,0 +1,125 @@
+<!-- Escuela View Modal -->
+<div x-show="escuelasModule?.showEscuelaViewModal" class="modal-backdrop show">
+    <div class="modal modal-xl d-block">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Escuela Details</h5>
+                    <button type="button" class="btn-close" @click="escuelasModule.closeViewModal()"></button>
+                </div>
+                
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Basic Information</h6>
+                            <table class="table table-borderless">
+                                <tr>
+                                    <td><strong>ID:</strong></td>
+                                    <td x-text="escuelasModule.viewingEscuela.id"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Nombre:</strong></td>
+                                    <td x-text="escuelasModule.viewingEscuela.nombre"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Circuito:</strong></td>
+                                    <td x-text="escuelasModule.viewingEscuela.circuito?.nombre || 'N/A'"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Localidad:</strong></td>
+                                    <td x-text="escuelasModule.viewingEscuela.circuito?.localidad?.nombre || 'N/A'"></td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h6>Location</h6>
+                            <table class="table table-borderless">
+                                <tr>
+                                    <td><strong>Calle:</strong></td>
+                                    <td x-text="escuelasModule.viewingEscuela.calle || 'N/A'"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Altura:</strong></td>
+                                    <td x-text="escuelasModule.viewingEscuela.altura || 'N/A'"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Coordenadas:</strong></td>
+                                    <td>
+                                        <span x-show="escuelasModule.viewingEscuela.lat && escuelasModule.viewingEscuela.lon">
+                                            <span x-text="escuelasModule.viewingEscuela.lat"></span>, 
+                                            <span x-text="escuelasModule.viewingEscuela.lon"></span>
+                                        </span>
+                                        <span x-show="!escuelasModule.viewingEscuela.lat || !escuelasModule.viewingEscuela.lon" class="text-muted">N/A</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Dificultad:</strong></td>
+                                    <td>
+                                        <span x-show="escuelasModule.viewingEscuela.dificultad" 
+                                              class="badge"
+                                              x-bind:class="{
+                                                'bg-success': escuelasModule.viewingEscuela.dificultad === 'baja',
+                                                'bg-warning': escuelasModule.viewingEscuela.dificultad === 'media',
+                                                'bg-danger': escuelasModule.viewingEscuela.dificultad === 'alta'
+                                              }"
+                                              x-text="escuelasModule.viewingEscuela.dificultad"></span>
+                                        <span x-show="!escuelasModule.viewingEscuela.dificultad" class="text-muted">N/A</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h6>Status</h6>
+                            <table class="table table-borderless">
+                                <tr>
+                                    <td><strong>Abierto:</strong></td>
+                                    <td>
+                                        <span class="badge" 
+                                              x-bind:class="escuelasModule.viewingEscuela.abierto ? 'bg-success' : 'bg-danger'"
+                                              x-text="escuelasModule.viewingEscuela.abierto ? 'Abierto' : 'Cerrado'"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Status:</strong></td>
+                                    <td>
+                                        <span class="badge" 
+                                              x-bind:class="escuelasModule.viewingEscuela.status === 'active' ? 'bg-success' : 'bg-warning'"
+                                              x-text="escuelasModule.viewingEscuela.status"></span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h6>Timestamps</h6>
+                            <table class="table table-borderless">
+                                <tr>
+                                    <td><strong>Created:</strong></td>
+                                    <td x-text="new Date(escuelasModule.viewingEscuela.created_at).toLocaleDateString()"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Updated:</strong></td>
+                                    <td x-text="new Date(escuelasModule.viewingEscuela.updated_at).toLocaleDateString()"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @click="escuelasModule.closeViewModal()">
+                        Close
+                    </button>
+                    <button type="button" 
+                            class="btn btn-primary" 
+                            @click="escuelasModule.editFromView()"
+                            x-show="hasPermission('escuelas.update')">
+                        <i class="fas fa-edit me-2"></i>Edit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

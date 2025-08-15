@@ -1,0 +1,18 @@
+<!-- Escuelas -->
+<div x-show="currentSection === 'escuelas'" class="content-section">
+    <div class="content-header d-flex justify-content-between align-items-center">
+        <div>
+            <h1>Escuelas</h1>
+            <p class="text-muted">Manage schools in the system</p>
+        </div>
+        <button class="btn btn-primary" 
+                @click="escuelasModule.new()" 
+                x-show="hasPermission('escuelas.create')">
+            <i class="fas fa-plus me-2"></i>Add New Escuela
+        </button>
+    </div>
+    
+    <div id="escuelas-content">
+        <!-- Content loads here -->
+    </div>
+</div> 

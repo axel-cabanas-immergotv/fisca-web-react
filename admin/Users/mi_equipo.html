@@ -1,0 +1,262 @@
+<!-- Mi Equipo Section -->
+<div x-show="currentSection === 'mi-equipo'" class="mi-equipo-section">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="h4 mb-1">Mi Equipo</h2>
+        </div>
+        <div>
+            <button type="button" class="btn btn-success" @click="usersModule.createTeamMember()">
+                <i class="fas fa-user-plus me-2"></i>
+                Agregar Miembro del Equipo
+            </button>
+        </div>
+    </div>
+
+    <!-- Loading State -->
+    <div x-show="usersModule.loadingTeam" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-2 text-muted">Cargando información del equipo...</p>
+    </div>
+
+    <!-- Main Content -->
+    <div x-show="!usersModule.loadingTeam && usersModule.teamData" class="row">
+        <!-- Left Column - Personal Info & Assignments -->
+        <div class="col-lg-4">
+            <!-- My Profile Card -->
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-user me-2"></i>
+                        Mi Información Personal
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-3">
+                        <div class="avatar-lg mx-auto mb-3">
+                            <i class="fas fa-user-circle fa-4x text-muted"></i>
+                        </div>
+                        <h5 x-text="usersModule.teamData.currentUser.first_name + ' ' + usersModule.teamData.currentUser.last_name"></h5>
+                        <span class="badge bg-primary" x-text="usersModule.teamData.currentUser.role?.display_name || 'Sin Rol'"></span>
+                    </div>
+                    
+                    <div class="personal-info">
+                        <div class="info-row">
+                            <label class="info-label">Email:</label>
+                            <span class="info-value" x-text="usersModule.teamData.currentUser.email"></span>
+                        </div>
+                        <div class="info-row" x-show="usersModule.teamData.currentUser.dni">
+                            <label class="info-label">DNI:</label>
+                            <span class="info-value" x-text="usersModule.teamData.currentUser.dni"></span>
+                        </div>
+                        <div class="info-row" x-show="usersModule.teamData.currentUser.telefono">
+                            <label class="info-label">Teléfono:</label>
+                            <span class="info-value" x-text="usersModule.teamData.currentUser.telefono"></span>
+                        </div>
+                        <div class="info-row">
+                            <label class="info-label">Estado:</label>
+                            <span class="badge bg-success" x-show="usersModule.teamData.currentUser.status === 'active'">Activo</span>
+                            <span class="badge bg-danger" x-show="usersModule.teamData.currentUser.status !== 'active'">Inactivo</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Superior Card -->
+            <div class="card mb-4" x-show="usersModule.teamData.superior">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-user-tie me-2"></i>
+                        Mi Superior
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="avatar-sm me-3">
+                            <i class="fas fa-user-circle fa-2x text-muted"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-1" x-text="usersModule.teamData.superior.first_name + ' ' + usersModule.teamData.superior.last_name"></h6>
+                            <small class="text-muted" x-text="usersModule.teamData.superior.role?.display_name"></small>
+                            <div class="mt-1">
+                                <small class="text-muted" x-text="usersModule.teamData.superior.email"></small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Assignments Card -->
+            <div class="card mb-4" x-show="usersModule.teamData.assignments && usersModule.teamData.assignments.length > 0">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-map-marker-alt me-2"></i>
+                        Mis Asignaciones
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <template x-for="assignment in usersModule.teamData.assignments" :key="assignment.id">
+                        <div class="assignment-item mb-3 p-3 bg-light rounded">
+                            <!-- Localidad Assignment -->
+                            <div x-show="assignment.localidad" class="assignment-row">
+                                <span class="badge bg-teal me-2">Localidad</span>
+                                <span x-text="assignment.localidad?.nombre"></span>
+                            </div>
+                            
+                            <!-- Circuito Assignment -->
+                            <div x-show="assignment.circuito" class="assignment-row">
+                                <span class="badge bg-cyan me-2">Circuito</span>
+                                <span x-text="assignment.circuito?.nombre"></span>
+                            </div>
+                            
+                            <!-- Escuela Assignment -->
+                            <div x-show="assignment.escuela" class="assignment-row">
+                                <span class="badge bg-indigo me-2">Escuela</span>
+                                <span x-text="assignment.escuela?.nombre"></span>
+                            </div>
+                            
+                            <!-- Mesa Assignment -->
+                            <div x-show="assignment.mesa" class="assignment-row">
+                                <span class="badge bg-pink me-2">Mesa</span>
+                                <span>Mesa N° <span x-text="assignment.mesa?.numero"></span></span>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+
+            <!-- Team Stats Card -->
+            <div class="card">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="mb-0">
+                        <i class="fas fa-chart-bar me-2"></i>
+                        Estadísticas del Equipo
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="stat-item">
+                        <span class="stat-label">Colaboradores</span>
+                        <span class="stat-value badge bg-primary" x-text="usersModule.teamData.subordinates?.length || 0"></span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Pares</span>
+                        <span class="stat-value badge bg-secondary" x-text="usersModule.teamData.siblings?.length || 0"></span>
+                    </div>
+                    <div class="stat-item" x-show="usersModule.teamData.totalTeamSize">
+                        <span class="stat-label">Tamaño Total del Equipo:</span>
+                        <span class="stat-value badge bg-success" x-text="usersModule.teamData.totalTeamSize"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column - Organizational Chart -->
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-sitemap me-2"></i>
+                        Organigrama Interactivo
+                    </h5>
+                    <small class="mt-1 d-block">Haz clic en los nodos para expandir/contraer subordinados</small>
+                </div>
+                <div class="card-body p-0">
+                    <!-- Color Legend -->
+                    <div class="p-3 bg-light border-bottom">
+                        <div class="row text-center">
+                            <div class="col-sm-6 col-lg-3 mb-2">
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <div class="legend-color superior-node me-2"></div>
+                                    <small>Superior</small>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-lg-3 mb-2">
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <div class="legend-color current-node me-2"></div>
+                                    <small><strong>Yo</strong></small>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-lg-3 mb-2">
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <div class="legend-color sibling-node me-2"></div>
+                                    <small>Pares</small>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-lg-3 mb-2">
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <div class="legend-color subordinate-node me-2"></div>
+                                    <small>Colaboradores</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- D3.js Organization Chart Container -->
+                    <div id="orgChart" class="org-chart-container"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Empty State -->
+    <div x-show="!usersModule.loadingTeam && !usersModule.teamData" class="empty-state text-center py-5">
+        <i class="fas fa-users fa-3x text-muted mb-3"></i>
+        <h5>No se pudo cargar la información del equipo</h5>
+        <p class="text-muted">Verifica tu conexión e intenta nuevamente.</p>
+        <button type="button" class="btn btn-primary" @click="usersModule.loadMyTeam()">
+            <i class="fas fa-retry me-1"></i>
+            Reintentar
+        </button>
+    </div>
+</div>
+
+<!-- Dynamic Subordinates Modal -->
+<div class="modal fade" id="subordinatesModal" tabindex="-1" x-show="usersModule.showSubordinatesModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-users me-2"></i>
+                    Subordinados de <span x-text="usersModule.selectedUserForSubordinates?.name"></span>
+                </h5>
+                <button type="button" class="btn-close" @click="usersModule.closeSubordinatesModal()"></button>
+            </div>
+            <div class="modal-body">
+                <div x-show="usersModule.loadingSubordinates" class="text-center py-3">
+                    <div class="spinner-border text-primary" role="status"></div>
+                    <p class="mt-2 text-muted">Cargando subordinados...</p>
+                </div>
+                
+                <div x-show="!usersModule.loadingSubordinates && usersModule.selectedUserSubordinates">
+                    <div class="row">
+                        <template x-for="subordinate in usersModule.selectedUserSubordinates" :key="subordinate.id">
+                            <div class="col-md-6 mb-3">
+                                <div class="card border-primary">
+                                    <div class="card-body p-3">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-user-circle fa-2x text-primary me-3"></i>
+                                            <div>
+                                                <h6 class="mb-1" x-text="subordinate.first_name + ' ' + subordinate.last_name"></h6>
+                                                <small class="text-muted" x-text="subordinate.role?.display_name"></small>
+                                                <div class="mt-1">
+                                                    <small class="text-muted" x-text="subordinate.email"></small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @click="usersModule.closeSubordinatesModal()">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

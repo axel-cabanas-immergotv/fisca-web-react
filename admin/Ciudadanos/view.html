@@ -1,0 +1,139 @@
+<!-- Ciudadano View Modal -->
+<div x-show="ciudadanosModule?.showCiudadanoViewModal" class="modal-backdrop show">
+    <div class="modal modal-xl d-block">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Ciudadano Details</h5>
+                    <button type="button" class="btn-close" @click="ciudadanosModule.closeViewModal()"></button>
+                </div>
+                
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Basic Information</h6>
+                            <table class="table table-borderless">
+                                <tr>
+                                    <td><strong>ID:</strong></td>
+                                    <td x-text="ciudadanosModule.viewingCiudadano.id"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Nombre:</strong></td>
+                                    <td x-text="ciudadanosModule.viewingCiudadano.nombre"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Apellido:</strong></td>
+                                    <td x-text="ciudadanosModule.viewingCiudadano.apellido"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>DNI:</strong></td>
+                                    <td x-text="ciudadanosModule.viewingCiudadano.dni"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Mesa:</strong></td>
+                                    <td x-text="ciudadanosModule.viewingCiudadano.mesa?.numero || 'N/A'"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Escuela:</strong></td>
+                                    <td x-text="ciudadanosModule.viewingCiudadano.mesa?.escuela?.nombre || 'N/A'"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Localidad:</strong></td>
+                                    <td x-text="ciudadanosModule.viewingCiudadano.mesa?.escuela?.circuito?.localidad?.nombre || 'N/A'"></td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h6>Personal Details</h6>
+                            <table class="table table-borderless">
+                                <tr>
+                                    <td><strong>Nacionalidad:</strong></td>
+                                    <td x-text="ciudadanosModule.viewingCiudadano.nacionalidad || 'N/A'"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Género:</strong></td>
+                                    <td>
+                                        <span x-show="ciudadanosModule.viewingCiudadano.genero" 
+                                              class="badge bg-info"
+                                              x-text="ciudadanosModule.viewingCiudadano.genero"></span>
+                                        <span x-show="!ciudadanosModule.viewingCiudadano.genero" class="text-muted">N/A</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Domicilio:</strong></td>
+                                    <td x-text="ciudadanosModule.viewingCiudadano.domicilio || 'N/A'"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Código Postal:</strong></td>
+                                    <td x-text="ciudadanosModule.viewingCiudadano.codigo_postal || 'N/A'"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Número de Orden:</strong></td>
+                                    <td>
+                                        <span x-show="ciudadanosModule.viewingCiudadano.numero_orden" 
+                                              class="badge bg-primary"
+                                              x-text="ciudadanosModule.viewingCiudadano.numero_orden"></span>
+                                        <span x-show="!ciudadanosModule.viewingCiudadano.numero_orden" class="text-muted">N/A</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Status:</strong></td>
+                                    <td>
+                                        <span class="badge" 
+                                              x-bind:class="ciudadanosModule.viewingCiudadano.status === 'active' ? 'bg-success' : 'bg-warning'"
+                                              x-text="ciudadanosModule.viewingCiudadano.status"></span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h6>Voting Information</h6>
+                            <table class="table table-borderless">
+                                <tr>
+                                    <td><strong>Mesa Number:</strong></td>
+                                    <td x-text="ciudadanosModule.viewingCiudadano.mesa?.numero || 'N/A'"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Escuela:</strong></td>
+                                    <td x-text="ciudadanosModule.viewingCiudadano.mesa?.escuela?.nombre || 'N/A'"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Circuito:</strong></td>
+                                    <td x-text="ciudadanosModule.viewingCiudadano.mesa?.escuela?.circuito?.nombre || 'N/A'"></td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h6>Timestamps</h6>
+                            <table class="table table-borderless">
+                                <tr>
+                                    <td><strong>Created:</strong></td>
+                                    <td x-text="new Date(ciudadanosModule.viewingCiudadano.created_at).toLocaleDateString()"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Updated:</strong></td>
+                                    <td x-text="new Date(ciudadanosModule.viewingCiudadano.updated_at).toLocaleDateString()"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @click="ciudadanosModule.closeViewModal()">
+                        Close
+                    </button>
+                    <button type="button" 
+                            class="btn btn-primary" 
+                            @click="ciudadanosModule.editFromView()"
+                            x-show="hasPermission('ciudadanos.update')">
+                        <i class="fas fa-edit me-2"></i>Edit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

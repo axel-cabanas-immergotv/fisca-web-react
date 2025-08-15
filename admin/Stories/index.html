@@ -1,0 +1,16 @@
+<!-- Stories -->
+<div x-show="currentSection === 'stories'" class="content-section">
+    <div class="content-header d-flex justify-content-between align-items-center">
+        <div>
+            <h1>Stories</h1>
+            <p class="text-muted">Create and manage your stories</p>
+        </div>
+        <button class="btn btn-primary" @click="storiesModule.new()" x-show="hasPermission('stories.create')">
+            <i class="fas fa-plus me-2"></i>Add New Story
+        </button>
+    </div>
+    
+    <div id="stories-content">
+        <!-- Stories content will be loaded here -->
+    </div>
+</div> 

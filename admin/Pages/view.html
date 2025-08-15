@@ -1,0 +1,95 @@
+<!-- Page View Modal -->
+<div class="modal fade" 
+     x-show="pagesModule.showPageViewModal" 
+     x-transition:enter="fade-in" 
+     x-transition:leave="fade-out" 
+     id="pageViewModal" 
+     tabindex="-1">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Page Details: <span x-text="pagesModule.viewingPage.title"></span></h5>
+                <button type="button" class="btn-close" @click="pagesModule.closePageViewModal()"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <h6>Basic Information</h6>
+                        <table class="table table-borderless">
+                            <tr>
+                                <td><strong>Title:</strong></td>
+                                <td x-text="pagesModule.viewingPage.title"></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Slug:</strong></td>
+                                <td><code>/<span x-text="pagesModule.viewingPage.slug"></span></code></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Status:</strong></td>
+                                <td>
+                                    <span class="badge" 
+                                          :class="pagesModule.viewingPage.status === 'published' ? 'bg-success' : 'bg-warning'"
+                                          x-text="pagesModule.viewingPage.status"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Type:</strong></td>
+                                <td>
+                                    <span x-show="pagesModule.viewingPage.is_system" class="badge bg-info">System Page</span>
+                                    <span x-show="!pagesModule.viewingPage.is_system" class="badge bg-secondary">Regular Page</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>SEO Information</h6>
+                        <table class="table table-borderless">
+                            <tr>
+                                <td><strong>Meta Title:</strong></td>
+                                <td>
+                                    <span x-show="pagesModule.viewingPage.meta_title" x-text="pagesModule.viewingPage.meta_title"></span>
+                                    <em x-show="!pagesModule.viewingPage.meta_title" class="text-muted">Not set</em>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Meta Description:</strong></td>
+                                <td>
+                                    <span x-show="pagesModule.viewingPage.meta_description" x-text="pagesModule.viewingPage.meta_description"></span>
+                                    <em x-show="!pagesModule.viewingPage.meta_description" class="text-muted">Not set</em>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Meta Robots:</strong></td>
+                                <td><code x-text="pagesModule.viewingPage.meta_robots || 'index,follow'"></code></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Created:</strong></td>
+                                <td x-text="pagesModule.viewingPage.created_at ? new Date(pagesModule.viewingPage.created_at).toLocaleDateString() : 'Unknown'"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="mt-3" x-show="pagesModule.viewingPage.content">
+                    <h6>Content Preview</h6>
+                    <div class="border rounded p-3" style="max-height: 300px; overflow-y: auto; background-color: #f8f9fa;">
+                        <em class="text-muted">
+                            Content stored as Editor.js blocks - 
+                            <span x-text="pagesModule.getContentBlocksCount()"></span> blocks
+                        </em>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @click="pagesModule.closePageViewModal()">Close</button>
+                <button type="button" 
+                        class="btn btn-primary" 
+                        @click="pagesModule.editPageFromView()"
+                        x-text="'Edit Page'"></button>
+                <button type="button" 
+                        class="btn btn-success" 
+                        @click="pagesModule.previewPageFromView()"
+                        x-text="'Preview'"></button>
+            </div>
+        </div>
+    </div>
+</div> 

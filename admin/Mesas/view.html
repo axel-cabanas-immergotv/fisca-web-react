@@ -1,0 +1,139 @@
+<!-- Mesa View Modal -->
+<div x-show="mesasModule?.showMesaViewModal" class="modal-backdrop show">
+    <div class="modal modal-xl d-block">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Mesa Details</h5>
+                    <button type="button" class="btn-close" @click="mesasModule.closeViewModal()"></button>
+                </div>
+                
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Basic Information</h6>
+                            <table class="table table-borderless">
+                                <tr>
+                                    <td><strong>ID:</strong></td>
+                                    <td x-text="mesasModule.viewingMesa.id"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Numero:</strong></td>
+                                    <td x-text="mesasModule.viewingMesa.numero"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Escuela:</strong></td>
+                                    <td x-text="mesasModule.viewingMesa.escuela?.nombre || 'N/A'"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Circuito:</strong></td>
+                                    <td x-text="mesasModule.viewingMesa.escuela?.circuito?.nombre || 'N/A'"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Localidad:</strong></td>
+                                    <td x-text="mesasModule.viewingMesa.escuela?.circuito?.localidad?.nombre || 'N/A'"></td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h6>Características</h6>
+                            <table class="table table-borderless">
+                                <tr>
+                                    <td><strong>Mesa Testigo:</strong></td>
+                                    <td>
+                                        <span class="badge" 
+                                              x-bind:class="mesasModule.viewingMesa.mesa_testigo ? 'bg-primary' : 'bg-secondary'"
+                                              x-text="mesasModule.viewingMesa.mesa_testigo ? 'Sí' : 'No'"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Mesa Extranjeros:</strong></td>
+                                    <td>
+                                        <span class="badge" 
+                                              x-bind:class="mesasModule.viewingMesa.mesa_extranjeros ? 'bg-info' : 'bg-secondary'"
+                                              x-text="mesasModule.viewingMesa.mesa_extranjeros ? 'Sí' : 'No'"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Mesa Abrió:</strong></td>
+                                    <td>
+                                        <span class="badge" 
+                                              x-bind:class="mesasModule.viewingMesa.mesa_abrio ? 'bg-success' : 'bg-warning'"
+                                              x-text="mesasModule.viewingMesa.mesa_abrio ? 'Sí' : 'No'"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Status:</strong></td>
+                                    <td>
+                                        <span class="badge" 
+                                              x-bind:class="mesasModule.viewingMesa.status === 'active' ? 'bg-success' : 'bg-warning'"
+                                              x-text="mesasModule.viewingMesa.status"></span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h6>Documentos</h6>
+                            <table class="table table-borderless">
+                                <tr>
+                                    <td><strong>Acta Escrutinio:</strong></td>
+                                    <td>
+                                        <span x-show="mesasModule.viewingMesa.acta_de_escrutinio">
+                                            <a :href="mesasModule.viewingMesa.acta_de_escrutinio" 
+                                               target="_blank" 
+                                               class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-download me-1"></i>Ver Acta
+                                            </a>
+                                        </span>
+                                        <span x-show="!mesasModule.viewingMesa.acta_de_escrutinio" class="text-muted">No disponible</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Certificado Escrutinio:</strong></td>
+                                    <td>
+                                        <span x-show="mesasModule.viewingMesa.certificado_de_escrutinio">
+                                            <a :href="mesasModule.viewingMesa.certificado_de_escrutinio" 
+                                               target="_blank" 
+                                               class="btn btn-sm btn-outline-success">
+                                                <i class="fas fa-download me-1"></i>Ver Certificado
+                                            </a>
+                                        </span>
+                                        <span x-show="!mesasModule.viewingMesa.certificado_de_escrutinio" class="text-muted">No disponible</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h6>Timestamps</h6>
+                            <table class="table table-borderless">
+                                <tr>
+                                    <td><strong>Created:</strong></td>
+                                    <td x-text="new Date(mesasModule.viewingMesa.created_at).toLocaleDateString()"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Updated:</strong></td>
+                                    <td x-text="new Date(mesasModule.viewingMesa.updated_at).toLocaleDateString()"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @click="mesasModule.closeViewModal()">
+                        Close
+                    </button>
+                    <button type="button" 
+                            class="btn btn-primary" 
+                            @click="mesasModule.editFromView()"
+                            x-show="hasPermission('mesas.update')">
+                        <i class="fas fa-edit me-2"></i>Edit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

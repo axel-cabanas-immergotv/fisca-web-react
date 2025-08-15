@@ -1,0 +1,141 @@
+    <!-- Main Container -->
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar" 
+               x-bind:class="{ 'mobile-open': mobileSidebarOpen }">
+            
+            <!-- Dashboard -->
+            <div class="sidebar-section">
+                <a href="#" 
+                   class="sidebar-item"
+                   x-bind:class="{ 'active': currentSection === 'dashboard' }"
+                   @click.prevent="setSection('dashboard')">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Panel de Control</span>
+                </a>
+                <a href="#" 
+                class="sidebar-item"
+                x-bind:class="{ 'active': currentSection === 'mi-equipo' }"
+                @click.prevent="setSection('mi-equipo')">
+                 <i class="fas fa-users"></i>
+                 <span>Mi Equipo</span>
+             </a>
+            </div>
+
+            <!-- Electoral Section -->
+            <div class="sidebar-section">
+                <h6 class="sidebar-header">Territorio</h6>
+                
+                <a href="#" 
+                   class="sidebar-item"
+                   x-bind:class="{ 'active': currentSection === 'localidades' }"
+                   @click.prevent="setSection('localidades')"
+                   x-show="hasPermission('localidades.read')">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <span>Localidades</span>
+                </a>
+                
+                <a href="#" 
+                   class="sidebar-item"
+                   x-bind:class="{ 'active': currentSection === 'secciones' }"
+                   @click.prevent="setSection('secciones')"
+                   x-show="hasPermission('secciones.read')">
+                    <i class="fas fa-list-ol"></i>
+                    <span>Secciones</span>
+                </a>
+                
+                <a href="#" 
+                   class="sidebar-item"
+                   x-bind:class="{ 'active': currentSection === 'circuitos' }"
+                   @click.prevent="setSection('circuitos')"
+                   x-show="hasPermission('circuitos.read')">
+                    <i class="fas fa-route"></i>
+                    <span>Circuitos</span>
+                </a>
+                
+                <a href="#" 
+                   class="sidebar-item"
+                   x-bind:class="{ 'active': currentSection === 'escuelas' }"
+                   @click.prevent="setSection('escuelas')"
+                   x-show="hasPermission('escuelas.read')">
+                    <i class="fas fa-school"></i>
+                    <span>Escuelas</span>
+                </a>
+                
+                <a href="#" 
+                   class="sidebar-item"
+                   x-bind:class="{ 'active': currentSection === 'mesas' }"
+                   @click.prevent="setSection('mesas')"
+                   x-show="hasPermission('mesas.read')">
+                    <i class="fas fa-table"></i>
+                    <span>Mesas</span>
+                </a>
+                
+                <a href="#" 
+                   class="sidebar-item"
+                   x-bind:class="{ 'active': currentSection === 'ciudadanos' }"
+                   @click.prevent="setSection('ciudadanos')"
+                   x-show="hasPermission('ciudadanos.read')">
+                    <i class="fas fa-users"></i>
+                    <span>Ciudadanos</span>
+                </a>
+            </div>
+
+            <!-- Users Section -->
+            <div class="sidebar-section" x-show="hasPermission('users.read')">
+                <h6 class="sidebar-header">Usuarios</h6>
+                
+                <a href="#" 
+                   class="sidebar-item"
+                   x-bind:class="{ 'active': currentSection === 'users' }"
+                   @click.prevent="setSection('users')">
+                    <i class="fas fa-users"></i>
+                    <span>Usuarios</span>
+                </a>
+                
+                <a href="#" 
+                   class="sidebar-item"
+                   x-bind:class="{ 'active': currentSection === 'roles' }"
+                   @click.prevent="setSection('roles')"
+                   x-show="hasPermission('roles.read')">
+                    <i class="fas fa-user-shield"></i>
+                    <span>Roles</span>
+                </a>
+                
+                <a href="#" 
+                   class="sidebar-item"
+                   x-bind:class="{ 'active': currentSection === 'permissions' }"
+                   @click.prevent="setSection('permissions')"
+                   x-show="hasPermission('permissions.read')">
+                    <i class="fas fa-key"></i>
+                    <span>Permisos</span>
+                </a>
+            </div>
+            
+
+            <!-- System Section -->
+            <div class="sidebar-section" x-show="hasPermission('affiliates.read')">
+                <h6 class="sidebar-header">System</h6>
+                
+                <a href="#" 
+                   class="sidebar-item"
+                   x-bind:class="{ 'active': currentSection === 'affiliates' }"
+                   @click.prevent="setSection('affiliates')">
+                    <i class="fas fa-building"></i>
+                    <span>Affiliates</span>
+                </a>
+            </div>
+
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-content">
+            <!-- Loading State -->
+            <div x-show="loading" class="text-center py-5">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+
+            <!-- Content Sections -->
+            <div x-show="!loading"> 

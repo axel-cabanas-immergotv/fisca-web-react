@@ -1,0 +1,16 @@
+<!-- Menus -->
+<div x-show="currentSection === 'menus'" class="content-section">
+    <div class="content-header d-flex justify-content-between align-items-center">
+        <div>
+            <h1>Menus</h1>
+            <p class="text-muted">Create and manage navigation menus</p>
+        </div>
+        <button class="btn btn-primary" @click="menusModule.new()" x-show="hasPermission('menus.create')">
+            <i class="fas fa-plus me-2"></i>Add New Menu
+        </button>
+    </div>
+    
+    <div id="menus-content">
+        <!-- Menus content will be loaded here -->
+    </div>
+</div> 

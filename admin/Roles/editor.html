@@ -1,0 +1,78 @@
+<!-- Role Modal -->
+<div x-show="rolesModule?.showRoleModal" 
+     x-transition
+     class="modal" 
+     :class="{ 'd-block': rolesModule?.showRoleModal }"
+     style="background-color: rgba(0, 0, 0, 0.5);"
+     @click.self="rolesModule.closeModal()"
+     x-cloak>
+    <div class="modal-dialog modal-xl" @click.stop>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" x-text="rolesModule?.isEditing ? 'Edit Role' : 'Create New Role'"></h5>
+                <button type="button" class="btn-close" @click="rolesModule.closeModal()"></button>
+            </div>
+            <div class="modal-body">
+                <form @submit.prevent="rolesModule.save()">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="role-name" class="form-label">Name *</label>
+                                <input type="text" class="form-control" id="role-name" 
+                                       x-model="rolesModule.roleForm.name" 
+                                       placeholder="Enter role name" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="role-display-name" class="form-label">Display Name *</label>
+                                <input type="text" class="form-control" id="role-display-name" 
+                                       x-model="rolesModule.roleForm.display_name" 
+                                       placeholder="Enter display name" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="role-description" class="form-label">Description</label>
+                        <textarea class="form-control" id="role-description" 
+                                  x-model="rolesModule.roleForm.description" 
+                                  rows="3" placeholder="Role description"></textarea>
+                    </div>
+                    
+                    <!-- Permissions Section -->
+                    <div class="mb-3">
+                        <label class="form-label">Permissions</label>
+                        <div class="border p-3 rounded" style="max-height: 300px; overflow-y: auto;">
+                            <template x-for="(permissions, entity) in rolesModule.groupedPermissions" :key="entity">
+                                <div class="mb-3">
+                                    <h6 class="text-capitalize mb-2" x-text="entity"></h6>
+                                    <div class="row">
+                                        <template x-for="permission in permissions" :key="permission.id">
+                                            <div class="col-md-3 mb-2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" 
+                                                           x-bind:id="'permission-' + permission.id"
+                                                           x-model="rolesModule.selectedPermissions"
+                                                           x-bind:value="permission.id">
+                                                    <label class="form-check-label" 
+                                                           x-bind:for="'permission-' + permission.id"
+                                                           x-text="permission.display_name"></label>
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @click="rolesModule.closeModal()">Cancel</button>
+                <button type="button" class="btn btn-primary" @click="rolesModule.save()">
+                    <span x-text="rolesModule?.isEditing ? 'Update' : 'Create'"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div> 

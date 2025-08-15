@@ -1,0 +1,57 @@
+<!-- Seccion Modal Editor -->
+<div x-show="seccionesModule?.showSeccionModal" 
+     x-transition
+     class="modal" 
+     :class="{ 'd-block': seccionesModule?.showSeccionModal }"
+     style="background-color: rgba(0, 0, 0, 0.5);"
+     @click.self="seccionesModule.closeModal()"
+     x-cloak>
+
+    <div class="modal modal-lg d-block">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form @submit.prevent="seccionesModule.save()">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            <span x-text="seccionesModule.isEditingSeccion ? 'Edit Seccion' : 'Add New Seccion'"></span>
+                        </h5>
+                        <button type="button" class="btn-close" @click="seccionesModule.closeModal()"></button>
+                    </div>
+                    
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Numero <span class="text-danger">*</span></label>
+                                    <input type="number" 
+                                           class="form-control" 
+                                           x-model="seccionesModule.seccionForm.numero" 
+                                           required>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Status</label>
+                                    <select class="form-select" x-model="seccionesModule.seccionForm.status">
+                                        <option value="active">Active</option>
+                                        <option value="inactive">Inactive</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" @click="seccionesModule.closeModal()">
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <span x-text="seccionesModule.isEditingSeccion ? 'Update' : 'Create'"></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div> 

@@ -1,0 +1,129 @@
+<!-- Mesa Modal Editor -->
+<div x-show="mesasModule?.showMesaModal" 
+    x-transition
+    class="modal" 
+    :class="{ 'd-block': mesasModule?.showMesaModal }"
+    style="background-color: rgba(0, 0, 0, 0.5);"
+    @click.self="mesasModule.closeModal()"
+    x-cloak>
+
+
+    <div class="modal modal-xl d-block">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form @submit.prevent="mesasModule.save()">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            <span x-text="mesasModule.isEditingMesa ? 'Edit Mesa' : 'Add New Mesa'"></span>
+                        </h5>
+                        <button type="button" class="btn-close" @click="mesasModule.closeModal()"></button>
+                    </div>
+                    
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Numero <span class="text-danger">*</span></label>
+                                    <input type="number" 
+                                           class="form-control" 
+                                           x-model="mesasModule.mesaForm.numero" 
+                                           required>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Escuela <span class="text-danger">*</span></label>
+                                    <select class="form-select" 
+                                            x-model="mesasModule.mesaForm.escuela_id" 
+                                            required>
+                                        <option value="">Select Escuela</option>
+                                        <template x-for="escuela in mesasModule.availableEscuelas" :key="escuela.id">
+                                            <option :value="escuela.id" x-text="`${escuela.nombre} (${escuela.circuito?.localidad?.nombre || 'N/A'})`"></option>
+                                        </template>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                    <label class="form-label">Características de la Mesa</label>
+                                    <div class="d-flex gap-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input" 
+                                                   type="checkbox" 
+                                                   x-model="mesasModule.mesaForm.mesa_testigo"
+                                                   id="mesa_testigo">
+                                            <label class="form-check-label" for="mesa_testigo">
+                                                Mesa Testigo
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" 
+                                                   type="checkbox" 
+                                                   x-model="mesasModule.mesaForm.mesa_extranjeros"
+                                                   id="mesa_extranjeros">
+                                            <label class="form-check-label" for="mesa_extranjeros">
+                                                Mesa de Extranjeros
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" 
+                                                   type="checkbox" 
+                                                   x-model="mesasModule.mesaForm.mesa_abrio"
+                                                   id="mesa_abrio">
+                                            <label class="form-check-label" for="mesa_abrio">
+                                                Mesa Abrió
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Acta de Escrutinio</label>
+                                    <input type="url" 
+                                           class="form-control" 
+                                           x-model="mesasModule.mesaForm.acta_de_escrutinio"
+                                           placeholder="URL del archivo S3">
+                                    <div class="form-text">URL del archivo en S3</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Certificado de Escrutinio</label>
+                                    <input type="url" 
+                                           class="form-control" 
+                                           x-model="mesasModule.mesaForm.certificado_de_escrutinio"
+                                           placeholder="URL del archivo S3">
+                                    <div class="form-text">URL del archivo en S3</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Status</label>
+                                    <select class="form-select" x-model="mesasModule.mesaForm.status">
+                                        <option value="active">Active</option>
+                                        <option value="inactive">Inactive</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" @click="mesasModule.closeModal()">
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <span x-text="mesasModule.isEditingMesa ? 'Update' : 'Create'"></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div> 

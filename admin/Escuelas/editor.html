@@ -1,0 +1,137 @@
+<!-- Escuela Modal Editor -->
+<div x-show="escuelasModule?.showEscuelaModal" 
+    x-transition
+    class="modal" 
+    :class="{ 'd-block': escuelasModule?.showEscuelaModal }"
+    style="background-color: rgba(0, 0, 0, 0.5);"
+    @click.self="escuelasModule.closeModal()"
+    x-cloak>
+
+
+    <div class="modal modal-xl d-block">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form @submit.prevent="escuelasModule.save()">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            <span x-text="escuelasModule.isEditingEscuela ? 'Edit Escuela' : 'Add New Escuela'"></span>
+                        </h5>
+                        <button type="button" class="btn-close" @click="escuelasModule.closeModal()"></button>
+                    </div>
+                    
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Nombre <span class="text-danger">*</span></label>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           x-model="escuelasModule.escuelaForm.nombre" 
+                                           required>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Circuito <span class="text-danger">*</span></label>
+                                    <select class="form-select" 
+                                            x-model="escuelasModule.escuelaForm.circuito_id" 
+                                            required>
+                                        <option value="">Select Circuito</option>
+                                        <template x-for="circuito in escuelasModule.availableCircuitos" :key="circuito.id">
+                                            <option :value="circuito.id" x-text="`${circuito.nombre} (${circuito.localidad?.nombre || 'N/A'})`"></option>
+                                        </template>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Calle</label>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           x-model="escuelasModule.escuelaForm.calle">
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Altura</label>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           x-model="escuelasModule.escuelaForm.altura">
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Latitud</label>
+                                    <input type="number" 
+                                           step="any"
+                                           class="form-control" 
+                                           x-model="escuelasModule.escuelaForm.lat"
+                                           placeholder="-34.6118">
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Longitud</label>
+                                    <input type="number" 
+                                           step="any"
+                                           class="form-control" 
+                                           x-model="escuelasModule.escuelaForm.lon"
+                                           placeholder="-58.3960">
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Dificultad</label>
+                                    <select class="form-select" x-model="escuelasModule.escuelaForm.dificultad">
+                                        <option value="">Select Dificultad</option>
+                                        <option value="baja">Baja</option>
+                                        <option value="media">Media</option>
+                                        <option value="alta">Alta</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Estado</label>
+                                    <div class="d-flex gap-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" 
+                                                   type="checkbox" 
+                                                   x-model="escuelasModule.escuelaForm.abierto"
+                                                   id="abierto">
+                                            <label class="form-check-label" for="abierto">
+                                                Abierto/Operativo
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <select class="form-select form-select-sm" x-model="escuelasModule.escuelaForm.status">
+                                                <option value="active">Active</option>
+                                                <option value="inactive">Inactive</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" @click="escuelasModule.closeModal()">
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <span x-text="escuelasModule.isEditingEscuela ? 'Update' : 'Create'"></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div> 

@@ -1,0 +1,71 @@
+<!-- Circuito Modal Editor -->
+<div x-show="circuitosModule?.showCircuitoModal" 
+x-transition
+class="modal" 
+:class="{ 'd-block': circuitosModule?.showCircuitoModal }"
+style="background-color: rgba(0, 0, 0, 0.5);"
+@click.self="circuitosModule.closeModal()"
+x-cloak>
+
+    <div class="modal modal-lg d-block">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form @submit.prevent="circuitosModule.save()">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            <span x-text="circuitosModule.isEditingCircuito ? 'Edit Circuito' : 'Add New Circuito'"></span>
+                        </h5>
+                        <button type="button" class="btn-close" @click="circuitosModule.closeModal()"></button>
+                    </div>
+                    
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Nombre <span class="text-danger">*</span></label>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           x-model="circuitosModule.circuitoForm.nombre" 
+                                           required>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Localidad <span class="text-danger">*</span></label>
+                                    <select class="form-select" 
+                                            x-model="circuitosModule.circuitoForm.localidad_id" 
+                                            required>
+                                        <option value="">Select Localidad</option>
+                                        <template x-for="localidad in circuitosModule.availableLocalidades" :key="localidad.id">
+                                            <option :value="localidad.id" x-text="localidad.nombre"></option>
+                                        </template>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Status</label>
+                                    <select class="form-select" x-model="circuitosModule.circuitoForm.status">
+                                        <option value="active">Active</option>
+                                        <option value="inactive">Inactive</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" @click="circuitosModule.closeModal()">
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <span x-text="circuitosModule.isEditingCircuito ? 'Update' : 'Create'"></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div> 

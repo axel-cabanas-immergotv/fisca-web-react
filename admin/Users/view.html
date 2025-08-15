@@ -1,0 +1,106 @@
+<!-- User View Modal -->
+<div class="modal fade" 
+     x-show="usersModule.showUserViewModal" 
+     x-transition:enter="fade-in" 
+     x-transition:leave="fade-out" 
+     id="userViewModal" 
+     tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">User Details: <span x-text="`${usersModule.viewingUser.first_name} ${usersModule.viewingUser.last_name}`"></span></h5>
+                <button type="button" class="btn-close" @click="usersModule.closeUserViewModal()"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <h6>Personal Information</h6>
+                        <table class="table table-borderless">
+                            <tr>
+                                <td><strong>First Name:</strong></td>
+                                <td x-text="usersModule.viewingUser.first_name"></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Last Name:</strong></td>
+                                <td x-text="usersModule.viewingUser.last_name"></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Username:</strong></td>
+                                <td><code x-text="usersModule.viewingUser.username"></code></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Email:</strong></td>
+                                <td>
+                                    <a :href="`mailto:${usersModule.viewingUser.email}`" x-text="usersModule.viewingUser.email"></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Status:</strong></td>
+                                <td>
+                                    <span class="badge" 
+                                          :class="usersModule.viewingUser.status === 'active' ? 'bg-success' : 'bg-warning'"
+                                          x-text="usersModule.viewingUser.status"></span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Account Information</h6>
+                        <table class="table table-borderless">
+                            <tr>
+                                <td><strong>Role:</strong></td>
+                                <td>
+                                    <span x-show="usersModule.viewingUser.role" 
+                                          class="badge bg-primary" 
+                                          x-text="usersModule.viewingUser.role?.display_name || usersModule.viewingUser.role?.name"></span>
+                                    <em x-show="!usersModule.viewingUser.role" class="text-muted">No role assigned</em>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Created:</strong></td>
+                                <td x-text="usersModule.viewingUser.created_at ? new Date(usersModule.viewingUser.created_at).toLocaleDateString() : 'Unknown'"></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Last Login:</strong></td>
+                                <td>
+                                    <span x-show="usersModule.viewingUser.last_login" x-text="new Date(usersModule.viewingUser.last_login).toLocaleDateString()"></span>
+                                    <em x-show="!usersModule.viewingUser.last_login" class="text-muted">Never</em>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Stories Count:</strong></td>
+                                <td>
+                                    <span class="badge bg-info" x-text="usersModule.viewingUser.stories_count || 0"></span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div x-show="usersModule.viewingUser.role && usersModule.viewingUser.role.permissions" class="mt-3">
+                    <h6>Role Permissions</h6>
+                    <div class="border rounded p-3" style="max-height: 200px; overflow-y: auto;">
+                        <template x-for="permission in usersModule.viewingUser.role.permissions" :key="permission.id">
+                            <span class="badge bg-secondary me-1 mb-1" x-text="permission.display_name || permission.name"></span>
+                        </template>
+                    </div>
+                </div>
+
+                <div x-show="usersModule.viewingUser.bio" class="mt-3">
+                    <h6>Bio</h6>
+                    <p class="text-muted" x-text="usersModule.viewingUser.bio"></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @click="usersModule.closeUserViewModal()">Close</button>
+                <button type="button" 
+                        class="btn btn-primary" 
+                        @click="usersModule.editUserFromView()">Edit User</button>
+                <button x-show="usersModule.viewingUser.email" 
+                        type="button" 
+                        class="btn btn-success" 
+                        @click="usersModule.sendEmailToUser()">Send Email</button>
+            </div>
+        </div>
+    </div>
+</div> 

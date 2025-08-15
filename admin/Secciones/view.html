@@ -1,0 +1,65 @@
+<!-- Seccion View Modal -->
+<div x-show="seccionesModule?.showSeccionViewModal" class="modal-backdrop show">
+    <div class="modal modal-lg d-block">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Seccion Details</h5>
+                    <button type="button" class="btn-close" @click="seccionesModule.closeViewModal()"></button>
+                </div>
+                
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Basic Information</h6>
+                            <table class="table table-borderless">
+                                <tr>
+                                    <td><strong>ID:</strong></td>
+                                    <td x-text="seccionesModule.viewingSeccion.id"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Numero:</strong></td>
+                                    <td x-text="seccionesModule.viewingSeccion.numero"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Status:</strong></td>
+                                    <td>
+                                        <span class="badge" 
+                                              x-bind:class="seccionesModule.viewingSeccion.status === 'active' ? 'bg-success' : 'bg-warning'"
+                                              x-text="seccionesModule.viewingSeccion.status"></span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h6>Timestamps</h6>
+                            <table class="table table-borderless">
+                                <tr>
+                                    <td><strong>Created:</strong></td>
+                                    <td x-text="new Date(seccionesModule.viewingSeccion.created_at).toLocaleDateString()"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Updated:</strong></td>
+                                    <td x-text="new Date(seccionesModule.viewingSeccion.updated_at).toLocaleDateString()"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @click="seccionesModule.closeViewModal()">
+                        Close
+                    </button>
+                    <button type="button" 
+                            class="btn btn-primary" 
+                            @click="seccionesModule.editFromView()"
+                            x-show="hasPermission('secciones.update')">
+                        <i class="fas fa-edit me-2"></i>Edit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

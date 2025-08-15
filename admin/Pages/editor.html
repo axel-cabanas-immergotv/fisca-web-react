@@ -1,0 +1,212 @@
+<!-- Page Editor -->
+<div x-show="currentSection === 'page-editor'" class="page-editor-container">
+    <!-- Editor Header -->
+    <div class="editor-header">
+        <div class="editor-header-left">
+            <button class="btn btn-link editor-back-btn" @click="pagesModule.back()">
+                <i class="fas fa-chevron-left me-2"></i>BACK
+            </button>
+            <h1 class="editor-title" x-text="pagesModule.currentPage.id ? 'Edit Page' : 'Create New Page'"></h1>
+        </div>
+        
+        <div class="editor-header-right">
+            <select class="form-select me-2" style="width: auto;" x-model="pagesModule.currentPage.status">
+                <option value="draft">Draft</option>
+                <option value="published">Published</option>
+                <option value="archived">Archived</option>
+            </select>
+            <button class="btn btn-primary" @click="pagesModule.save()">
+                <i class="fas fa-save me-1"></i>SAVE
+            </button>
+        </div>
+    </div>
+
+    <!-- Editor Layout -->
+    <div class="editor-layout">
+        <!-- Main Editor Area -->
+        <div class="editor-main">
+            <!-- Page Title -->
+            <div class="page-title-section mb-4 p-4">
+                <input type="text" 
+                       class="form-control form-control-lg border-0 p-0" 
+                       placeholder="Enter page title..."
+                       x-model="pagesModule.currentPage.title"
+                       style="font-size: 2.5rem; font-weight: bold;">
+            </div>
+
+            <!-- Editor.js Container -->
+            <div class="page-content-section">
+                <div id="page-editor" class="visual-editor">
+                    <!-- Editor.js will be initialized here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Sidebar -->
+        <div class="editor-sidebar">
+            <div class="sidebar-panel">
+                <!-- Publish Panel -->
+                <div class="panel-section">
+                    <h6 class="panel-title">PUBLISH</h6>
+                    <div class="form-group mb-3">
+                        <label class="form-label">Status</label>
+                        <select class="form-control" x-model="pagesModule.currentPage.status">
+                            <option value="draft">Draft</option>
+                            <option value="published">Published</option>
+                            <option value="archived">Archived</option>
+                        </select>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="form-label">Template</label>
+                        <select class="form-control" x-model="pagesModule.currentPage.template">
+                            <option value="">Default Template</option>
+                            <option value="full-width">Full Width</option>
+                            <option value="landing">Landing Page</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Hierarchy Panel -->
+                <div class="panel-section">
+                    <h6 class="panel-title">HIERARCHY</h6>
+                    <div class="form-group mb-3">
+                        <label class="form-label">Parent Page</label>
+                        <select class="form-control" x-model="pagesModule.currentPage.parent_id">
+                            <option value="">No Parent (Top Level)</option>
+                            <template x-for="page in pagesModule.availableParents" :key="page.id">
+                                <option :value="page.id" x-text="page.title"></option>
+                            </template>
+                        </select>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="form-label">Sort Order</label>
+                        <input type="number" class="form-control" 
+                               x-model="pagesModule.currentPage.sort_order"
+                               placeholder="0">
+                    </div>
+                </div>
+
+                <!-- SEO Panel -->
+                <div class="panel-section">
+                    <h6 class="panel-title">SEO</h6>
+                    <div class="form-group mb-3">
+                        <label class="form-label">Slug</label>
+                        <input type="text" class="form-control" 
+                               x-model="pagesModule.currentPage.slug"
+                               placeholder="page-slug">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="form-label">Meta Title</label>
+                        <input type="text" class="form-control" 
+                               x-model="pagesModule.currentPage.meta_title"
+                               placeholder="SEO title">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="form-label">Meta Description</label>
+                        <textarea class="form-control" rows="3"
+                                  x-model="pagesModule.currentPage.meta_description"
+                                  placeholder="SEO description"></textarea>
+                    </div>
+                </div>
+
+                <!-- Custom CSS Panel -->
+                <div class="panel-section">
+                    <h6 class="panel-title">CUSTOM CSS</h6>
+                    <div class="form-group mb-3">
+                        <label class="form-label">CSS Code</label>
+                        <textarea class="form-control" rows="8"
+                                  x-model="pagesModule.currentPage.custom_css"
+                                  placeholder="/* Custom CSS for this page */&#10;.page-content {&#10;  /* Your styles here */&#10;}"
+                                  style="font-family: 'Courier New', monospace; font-size: 12px; resize: none;"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-sm btn-outline-secondary" 
+                                @click="pagesModule.clearCustomCSS()">
+                            <i class="fas fa-trash me-1"></i>Clear
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Menu Panel -->
+                <div class="panel-section">
+                    <h6 class="panel-title">MENU</h6>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" 
+                               x-model="pagesModule.currentPage.show_in_menu">
+                        <label class="form-check-label">Show in menu</label>
+                    </div>
+                    <div class="form-group mb-3" x-show="pagesModule.currentPage.show_in_menu">
+                        <label class="form-label">Menu Title</label>
+                        <input type="text" class="form-control" 
+                               x-model="pagesModule.currentPage.menu_title"
+                               placeholder="Override title for menu">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Page New/Edit Modal -->
+<div x-show="pagesModule.showPageModal" 
+     x-transition
+     class="modal" 
+     :class="{ 'd-block': pagesModule.showPageModal }"
+     style="background-color: rgba(0, 0, 0, 0.5);"
+     @click.self="pagesModule.closeModal()"
+     x-cloak>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" @click.stop>
+            <div class="modal-header">
+                <h5 class="modal-title" x-text="pagesModule.isEditingPage ? 'Edit Page' : 'Create New Page'"></h5>
+                <button type="button" class="btn-close" @click="pagesModule.closeModal()"></button>
+            </div>
+            <div class="modal-body">
+                <form id="pageForm" @submit.prevent="pagesModule.save()">
+                    <div class="mb-3">
+                        <label for="pageTitle" class="form-label">Title</label>
+                        <input type="text" 
+                               class="form-control" 
+                               id="pageTitle" 
+                               x-model="pagesModule.pageForm.title"
+                               @input="!pagesModule.isEditingPage && !pagesModule.pageForm.slug ? pagesModule.pageForm.slug = $event.target.value.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').trim('-') : null"
+                               required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="pageSlug" class="form-label">Slug</label>
+                        <input type="text" 
+                               class="form-control" 
+                               id="pageSlug" 
+                               x-model="pagesModule.pageForm.slug"
+                               required>
+                        <div class="form-text">URL will be: /<span x-text="pagesModule.pageForm.slug || 'page-slug'"></span></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="pageStatus" class="form-label">Status</label>
+                        <select class="form-control" id="pageStatus" x-model="pagesModule.pageForm.status">
+                            <option value="draft">Draft</option>
+                            <option value="published">Published</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="pageContent" class="form-label">Content (Basic)</label>
+                        <textarea class="form-control" 
+                                  id="pageContent" 
+                                  rows="5" 
+                                  x-model="pagesModule.pageForm.content"
+                                  placeholder="Enter page content here..."></textarea>
+                        <div class="form-text">For now, enter simple text. Editor.js integration coming soon.</div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @click="pagesModule.closeModal()">Cancel</button>
+                <button type="button" 
+                        class="btn btn-primary" 
+                        @click="pagesModule.save()">
+                    <span x-text="pagesModule.isEditingPage ? 'Update' : 'Create'"></span> Page
+                </button>
+            </div>
+        </div>
+    </div>
+</div> 

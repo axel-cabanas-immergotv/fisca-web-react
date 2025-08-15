@@ -1,0 +1,114 @@
+<!-- Permissions Matrix Section -->
+<div x-show="currentSection === 'permissions'" class="permissions-section">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="h4 mb-1">Permissions Matrix</h2>
+            <p class="text-muted mb-0">Manage role permissions assignments</p>
+        </div>
+        <div class="d-flex gap-2">
+            <button type="button" 
+                    class="btn btn-outline-secondary"
+                    @click="permissionsModule.loadMatrix()">
+                <i class="fas fa-sync"></i>
+                Refresh
+            </button>
+        </div>
+    </div>
+
+    <!-- Loading State -->
+    <div x-show="permissionsModule.loading" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-2 text-muted">Loading permissions matrix...</p>
+    </div>
+
+    <!-- Permissions Matrix -->
+    <div x-show="!permissionsModule.loading && permissionsModule.matrixData" class="matrix-container">
+        <!-- Matrix Table -->
+        <div class="table-responsive">
+            <table class="table table-bordered table-sm permissions-matrix">
+                <thead class="table-dark">
+                    <tr>
+                        <th class="permission-column">Permission</th>
+                        <template x-for="role in permissionsModule.matrixData.roles" :key="role.id">
+                            <th class="role-column text-center">
+                                <div class="role-header">
+                                    <div class="role-name" x-text="role.display_name"></div>
+                                    <small class="role-code text-muted" x-text="role.name"></small>
+                                </div>
+                            </th>
+                        </template>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template x-for="(matrixRow, index) in permissionsModule.matrixData.matrix" :key="matrixRow.permission.id">
+                        <tr :class="index % 2 === 0 ? 'table-light' : ''">
+                            <!-- Permission Info -->
+                            <td class="permission-info">
+                                <div class="permission-details">
+                                    <div class="permission-name">
+                                        <span class="entity-badge" 
+                                              :class="permissionsModule.getEntityBadgeClass(matrixRow.permission.entity)"
+                                              x-text="matrixRow.permission.entity"></span>
+                                        <span class="action-text" x-text="matrixRow.permission.action"></span>
+                                    </div>
+                                    <small class="permission-description text-muted" x-text="matrixRow.permission.display_name"></small>
+                                </div>
+                            </td>
+                            
+                            <!-- Role Checkboxes -->
+                            <template x-for="role in permissionsModule.matrixData.roles" :key="role.id">
+                                <td class="text-center checkbox-cell">
+                                    <div class="form-check d-inline-block">
+                                        <input class="form-check-input" 
+                                               type="checkbox"
+                                               :id="`perm_${matrixRow.permission.id}_role_${role.id}`"
+                                               :checked="matrixRow.roleAssignments[role.id]"
+                                               :disabled="role.name === 'admin' && role.is_system"
+                                               @change="permissionsModule.togglePermissionAssignment(matrixRow.permission.id, role.id, $event.target.checked)">
+                                        <label class="form-check-label visually-hidden" 
+                                               :for="`perm_${matrixRow.permission.id}_role_${role.id}`">
+                                            Toggle permission
+                                        </label>
+                                    </div>
+                                </td>
+                            </template>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Matrix Statistics -->
+        <div class="matrix-stats mt-3">
+            <div class="row text-center">
+                <div class="col-md-4">
+                    <div class="stat-card bg-light p-3 rounded">
+                        <h5 class="mb-1" x-text="permissionsModule.matrixData.permissions.length"></h5>
+                        <small class="text-muted">Total Permissions</small>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stat-card bg-light p-3 rounded">
+                        <h5 class="mb-1" x-text="permissionsModule.matrixData.roles.length"></h5>
+                        <small class="text-muted">Total Roles</small>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stat-card bg-light p-3 rounded">
+                        <h5 class="mb-1" x-text="permissionsModule.getAssignedCount()"></h5>
+                        <small class="text-muted">Total Assignments</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Empty State -->
+    <div x-show="!permissionsModule.loading && !permissionsModule.matrixData" class="empty-state text-center py-5">
+        <i class="fas fa-shield-alt fa-3x text-muted mb-3"></i>
+        <h5>No permissions found</h5>
+        <p class="text-muted">There are no permissions configured in the system.</p>
+    </div>
+</div> 

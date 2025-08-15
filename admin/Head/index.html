@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | Web Editor CMS</title>
+    <meta name="description" content="Web Editor CMS admin panel">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Editor.js CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest/build/editorjs.css" rel="stylesheet">
+    <!-- Columns Plugin CSS -->
+    <link href="/src/editorjs/columns/columns.css" rel="stylesheet">
+    <!-- AdvUnit Plugin CSS -->
+    <link href="/advunit.css" rel="stylesheet">
+    <!-- Custom Admin CSS -->
+    <link href="/admin.css" rel="stylesheet">
+    <!-- jQuery (required by other plugins) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <!-- SortableJS for drag and drop -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <!-- D3.js for organizational charts -->
+    <script src="https://d3js.org/d3.v7.min.js" onload="window.d3Loaded = true;" onerror="window.d3LoadError = true;"></script>
+    <script>
+        // Robust D3.js loader with multiple fallbacks
+        function loadD3Fallback(urls, index = 0) {
+            if (index >= urls.length) {
+                console.error('❌ All D3.js CDNs failed to load');
+                window.d3LoadFailed = true;
+                return;
+            }
+
+            console.warn(`🚨 Trying D3.js fallback ${index + 1}...`);
+            const script = document.createElement('script');
+            script.src = urls[index];
+            script.onload = function() {
+                console.log(`✅ D3.js loaded from fallback ${index + 1}: ${urls[index]}`);
+                window.d3Loaded = true;
+            };
+            script.onerror = function() {
+                console.warn(`❌ D3.js fallback ${index + 1} failed: ${urls[index]}`);
+                loadD3Fallback(urls, index + 1);
+            };
+            document.head.appendChild(script);
+        }
+
+        // Check if D3.js loaded after a short delay
+        setTimeout(function() {
+            if (!window.d3 || window.d3LoadError) {
+                console.warn('🚨 Primary D3.js CDN failed or delayed, trying fallbacks...');
+                const fallbackUrls = [
+                    'https://unpkg.com/d3@7.8.5/dist/d3.min.js',
+                    'https://cdn.jsdelivr.net/npm/d3@7.8.5/dist/d3.min.js',
+                    'https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js'
+                ];
+                loadD3Fallback(fallbackUrls);
+            } else {
+                console.log('✅ D3.js loaded from primary CDN');
+                window.d3Loaded = true;
+            }
+        }, 2000);
+
+        // Final check after page load
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                if (!window.d3 && !window.d3LoadFailed) {
+                    console.error('❌ D3.js still not available after all attempts');
+                    window.d3LoadFailed = true;
+                }
+            }, 3000);
+        });
+    </script>
+    <style>
+        .menu-builder .menu-item {
+            transition: all 0.3s ease;
+        }
+        .menu-builder .menu-item:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .menu-builder .drag-handle {
+            cursor: grab;
+        }
+        .menu-builder .drag-handle:active {
+            cursor: grabbing;
+        }
+        .menu-builder .sortable-chosen {
+            opacity: 0.8;
+        }
+        .menu-builder .sortable-ghost {
+            opacity: 0.4;
+        }
+        .menu-builder .submenu {
+            border-left: 3px solid #dee2e6;
+            padding-left: 1rem;
+        }
+        .menu-actions .btn {
+            border: none;
+        }
+    </style>
+</head>
+<body x-data="adminApp()" x-init="init()"> 

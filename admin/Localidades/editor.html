@@ -1,0 +1,57 @@
+<!-- Localidad Modal Editor -->
+<div x-show="localidadesModule?.showLocalidadModal" 
+     x-transition
+     class="modal" 
+     :class="{ 'd-block': localidadesModule?.showLocalidadModal }"
+     style="background-color: rgba(0, 0, 0, 0.5);"
+     @click.self="localidadesModule.closeModal()"
+     x-cloak>
+
+    <div class="modal modal-lg d-block">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form @submit.prevent="localidadesModule.save()">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            <span x-text="localidadesModule.isEditingLocalidad ? 'Edit Localidad' : 'Add New Localidad'"></span>
+                        </h5>
+                        <button type="button" class="btn-close" @click="localidadesModule.closeModal()"></button>
+                    </div>
+                    
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Nombre <span class="text-danger">*</span></label>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           x-model="localidadesModule.localidadForm.nombre" 
+                                           required>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Status</label>
+                                    <select class="form-select" x-model="localidadesModule.localidadForm.status">
+                                        <option value="active">Active</option>
+                                        <option value="inactive">Inactive</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" @click="localidadesModule.closeModal()">
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <span x-text="localidadesModule.isEditingLocalidad ? 'Update' : 'Create'"></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div> 

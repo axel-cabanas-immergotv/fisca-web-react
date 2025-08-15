@@ -1,0 +1,77 @@
+<!-- Category Modal -->
+<div x-show="categoriesModule?.showCategoryModal" 
+     x-transition
+     class="modal" 
+     :class="{ 'd-block': categoriesModule?.showCategoryModal }"
+     style="background-color: rgba(0, 0, 0, 0.5);"
+     @click.self="categoriesModule.closeModal()"
+     x-cloak>
+    <div class="modal-dialog modal-lg" @click.stop>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" x-text="categoriesModule?.isEditing ? 'Edit Category' : 'Create New Category'"></h5>
+                <button type="button" class="btn-close" @click="categoriesModule.closeModal()"></button>
+            </div>
+            <div class="modal-body">
+                <form @submit.prevent="categoriesModule.save()">
+                    <div class="mb-3">
+                        <label for="category-name" class="form-label">Name *</label>
+                        <input type="text" class="form-control" id="category-name" 
+                               x-model="categoriesModule.categoryForm.name" 
+                               placeholder="Enter category name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="category-slug" class="form-label">Slug</label>
+                        <input type="text" class="form-control" id="category-slug" 
+                               x-model="categoriesModule.categoryForm.slug" 
+                               placeholder="Auto-generated from name">
+                        <div class="form-text">Leave empty to auto-generate from name</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="category-description" class="form-label">Description</label>
+                        <textarea class="form-control" id="category-description" 
+                                  x-model="categoriesModule.categoryForm.description" 
+                                  rows="3" placeholder="Category description"></textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="category-color" class="form-label">Color</label>
+                            <input type="color" class="form-control form-control-color" 
+                                   id="category-color" x-model="categoriesModule.categoryForm.color" 
+                                   title="Choose category color">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="category-icon" class="form-label">Icon Class</label>
+                            <input type="text" class="form-control" id="category-icon" 
+                                   x-model="categoriesModule.categoryForm.icon" 
+                                   placeholder="e.g., fas fa-laptop">
+                            <div class="form-text">FontAwesome icon class</div>
+                        </div>
+                    </div>
+                    <div class="mb-3 mt-3">
+                        <label for="category-parent" class="form-label">Parent Category</label>
+                        <select class="form-select" id="category-parent" x-model="categoriesModule.categoryForm.parent_id">
+                            <option value="">No Parent (Top Level)</option>
+                            <template x-for="category in categoriesModule.availableParents" :key="category.id">
+                                <option :value="category.id" x-text="category.name"></option>
+                            </template>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="category-status" class="form-label">Status</label>
+                        <select class="form-select" id="category-status" x-model="categoriesModule.categoryForm.status">
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @click="categoriesModule.closeModal()">Cancel</button>
+                <button type="button" class="btn btn-primary" @click="categoriesModule.save()">
+                    <span x-text="categoriesModule?.isEditing ? 'Update' : 'Create'"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div> 

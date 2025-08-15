@@ -1,0 +1,210 @@
+<!-- Module Editor -->
+<div x-show="currentSection === 'module-editor'" class="page-editor-container">
+    <!-- Editor Header -->
+    <div class="editor-header">
+        <div class="editor-header-left">
+            <button class="btn btn-link editor-back-btn" @click="modulesModule.back()">
+                <i class="fas fa-chevron-left me-2"></i>BACK
+            </button>
+            <h1 class="editor-title" x-text="modulesModule.currentModule ? modulesModule.currentModule.display_name + ' Module' : 'Module Editor'"></h1>
+        </div>
+        
+        <div class="editor-header-right">
+            <button class="btn btn-primary" @click="modulesModule.save()">
+                <i class="fas fa-save me-1"></i>UPDATE
+            </button>
+        </div>
+    </div>
+
+    <!-- Editor Layout -->
+    <div class="editor-layout">
+        <!-- Main Editor Area -->
+        <div class="editor-main">
+            <!-- Editor Tabs -->
+            <div class="editor-tabs">
+                <button class="editor-tab" 
+                        x-bind:class="{ 'active': modulesModule.editorMode === 'visual' }"
+                        @click="modulesModule.editorMode = 'visual'">
+                    VISUAL
+                </button>
+                <button class="editor-tab" 
+                        x-bind:class="{ 'active': modulesModule.editorMode === 'code' }"
+                        @click="modulesModule.editorMode = 'code'">
+                    CODE
+                </button>
+            </div>
+
+            <!-- Visual Editor -->
+            <div x-show="modulesModule.editorMode === 'visual'" class="editor-content">
+                <div id="module-editor" class="visual-editor">
+                    <!-- Editor.js will be initialized here -->
+                </div>
+            </div>
+
+            <!-- Code Editor -->
+            <div x-show="modulesModule.editorMode === 'code'" class="editor-content">
+                <textarea id="module-code-editor" 
+                          class="code-editor-textarea"
+                          x-model="modulesModule.moduleCode"
+                          placeholder="Enter JSON data for the module..."></textarea>
+                <div class="mt-2">
+                    <button class="btn btn-sm btn-secondary" @click="modulesModule.syncToVisualModuleEditor()">
+                        <i class="fas fa-sync me-1"></i>Sync to Visual Editor
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Sidebar -->
+        <div class="editor-sidebar">
+            <div class="sidebar-panel">
+                <!-- Properties Panel -->
+                <div class="panel-section">
+                    <h6 class="panel-title">MODULE PROPERTIES</h6>
+                    
+                    <div class="form-group mb-3">
+                        <label class="form-label">MODULE NAME</label>
+                        <input type="text" 
+                               class="form-control" 
+                               x-model="modulesModule.currentModule ? modulesModule.currentModule.display_name : ''"
+                               disabled>
+                        <div class="form-text text-muted mt-1">
+                            <i class="fas fa-info-circle me-1"></i>
+                            System modules cannot change their name.
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label class="form-label">MODULE TYPE</label>
+                        <input type="text" 
+                               class="form-control" 
+                               x-model="modulesModule.currentModule ? modulesModule.currentModule.type : ''"
+                               disabled>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label class="form-label">STATUS</label>
+                        <select class="form-control" 
+                                x-model="modulesModule.currentModule ? modulesModule.currentModule.status : 'active'">
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label class="form-label">DESCRIPTION</label>
+                        <textarea class="form-control" 
+                                  rows="3"
+                                  x-model="modulesModule.currentModule ? modulesModule.currentModule.description : ''"
+                                  placeholder="Module description..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Custom CSS Panel -->
+                <div class="panel-section">
+                    <h6 class="panel-title">CUSTOM CSS</h6>
+                    <div class="form-group mb-3">
+                        <label class="form-label">CSS Code</label>
+                        <textarea class="form-control" rows="8"
+                                  x-model="modulesModule.currentModule.custom_css"
+                                  placeholder="/* Custom CSS for this module */&#10;.module-content {&#10;  /* Your styles here */&#10;}"
+                                  style="font-family: 'Courier New', monospace; font-size: 12px; resize: none;"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-sm btn-outline-secondary" 
+                                @click="modulesModule.clearCustomCSS()">
+                            <i class="fas fa-trash me-1"></i>Clear
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Help Panel -->
+                <div class="panel-section">
+                    <h6 class="panel-title">EDITOR HELP</h6>
+                    <div class="help-content">
+                        <p class="small text-muted">
+                            Use the visual editor to build your module layout. You can add:
+                        </p>
+                        <ul class="small text-muted">
+                            <li>Text paragraphs</li>
+                            <li>Headers (H1-H6)</li>
+                            <li>Lists and quotes</li>
+                            <li>Images</li>
+                            <li>Columns layouts</li>
+                            <li>Custom widgets</li>
+                        </ul>
+                        <p class="small text-muted">
+                            Switch to the CODE tab to view and edit the raw JSON if needed.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Module Modal -->
+<div x-show="modulesModule?.showModuleModal" 
+     x-transition
+     class="modal" 
+     :class="{ 'd-block': modulesModule?.showModuleModal }"
+     style="background-color: rgba(0, 0, 0, 0.5);"
+     @click.self="modulesModule.closeModal()"
+     x-cloak>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" @click.stop>
+            <div class="modal-header">
+                <h5 class="modal-title" x-text="modulesModule?.isEditingModule ? 'Edit Module' : 'Create New Module'"></h5>
+                <button type="button" class="btn-close" @click="modulesModule.closeModal()"></button>
+            </div>
+            <div class="modal-body">
+                <form @submit.prevent="modulesModule.save()">
+                    <div class="mb-3">
+                        <label for="moduleType" class="form-label">Type *</label>
+                        <select class="form-control" id="moduleType" x-model="modulesModule.moduleForm.type" required>
+                            <option value="">Select module type</option>
+                            <option value="header">Header</option>
+                            <option value="footer">Footer</option>
+                            <option value="sidebar">Sidebar</option>
+                            <option value="custom">Custom</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="moduleDisplayName" class="form-label">Display Name *</label>
+                        <input type="text" class="form-control" id="moduleDisplayName" 
+                               x-model="modulesModule.moduleForm.display_name" 
+                               placeholder="Enter module display name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="moduleContent" class="form-label">Content (Basic)</label>
+                        <textarea class="form-control" id="moduleContent" 
+                                  x-model="modulesModule.moduleForm.content" 
+                                  rows="5" 
+                                  placeholder="Enter basic content here..."></textarea>
+                        <div class="form-text">For advanced editing, use the full editor after creating the module.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="moduleCustomCSS" class="form-label">Custom CSS</label>
+                        <textarea class="form-control" id="moduleCustomCSS" 
+                                  x-model="modulesModule.moduleForm.custom_css" 
+                                  rows="4" 
+                                  style="font-family: 'Courier New', monospace; font-size: 12px; resize: none;"
+                                  placeholder="/* Custom CSS for this module */&#10;.module-content {&#10;  /* Your styles here */&#10;}"></textarea>
+                        <div class="form-text mt-1">
+                            <small class="text-muted">
+                                <i class="fas fa-info-circle"></i> 
+                                CSS will apply automatically on public pages where this module is used.
+                            </small>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @click="modulesModule.closeModal()">Cancel</button>
+                <button type="button" class="btn btn-primary" @click="modulesModule.save()">
+                    <span x-text="modulesModule?.isEditingModule ? 'Update' : 'Create'"></span> Module
+                </button>
+            </div>
+        </div>
+    </div>
+</div> 

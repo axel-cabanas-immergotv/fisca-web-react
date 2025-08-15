@@ -187,6 +187,6 @@ ecosystem.config.js
 *.crt 
 
 # Archivos de configuración de admin
-admin/
-models_js/
-scripts/
+# admin/
+# models_js/
+# scripts/

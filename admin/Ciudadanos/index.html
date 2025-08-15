@@ -1,0 +1,18 @@
+<!-- Ciudadanos -->
+<div x-show="currentSection === 'ciudadanos'" class="content-section">
+    <div class="content-header d-flex justify-content-between align-items-center">
+        <div>
+            <h1>Ciudadanos</h1>
+            <p class="text-muted">Manage voters in the system</p>
+        </div>
+        <button class="btn btn-primary" 
+                @click="ciudadanosModule.new()" 
+                x-show="hasPermission('ciudadanos.create')">
+            <i class="fas fa-plus me-2"></i>Add New Ciudadano
+        </button>
+    </div>
+    
+    <div id="ciudadanos-content">
+        <!-- Content loads here -->
+    </div>
+</div> 

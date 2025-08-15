@@ -1,0 +1,65 @@
+<!-- Localidad View Modal -->
+<div x-show="localidadesModule?.showLocalidadViewModal" class="modal-backdrop show">
+    <div class="modal modal-lg d-block">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Localidad Details</h5>
+                    <button type="button" class="btn-close" @click="localidadesModule.closeViewModal()"></button>
+                </div>
+                
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Basic Information</h6>
+                            <table class="table table-borderless">
+                                <tr>
+                                    <td><strong>ID:</strong></td>
+                                    <td x-text="localidadesModule.viewingLocalidad.id"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Nombre:</strong></td>
+                                    <td x-text="localidadesModule.viewingLocalidad.nombre"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Status:</strong></td>
+                                    <td>
+                                        <span class="badge" 
+                                              x-bind:class="localidadesModule.viewingLocalidad.status === 'active' ? 'bg-success' : 'bg-warning'"
+                                              x-text="localidadesModule.viewingLocalidad.status"></span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h6>Timestamps</h6>
+                            <table class="table table-borderless">
+                                <tr>
+                                    <td><strong>Created:</strong></td>
+                                    <td x-text="new Date(localidadesModule.viewingLocalidad.created_at).toLocaleDateString()"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Updated:</strong></td>
+                                    <td x-text="new Date(localidadesModule.viewingLocalidad.updated_at).toLocaleDateString()"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @click="localidadesModule.closeViewModal()">
+                        Close
+                    </button>
+                    <button type="button" 
+                            class="btn btn-primary" 
+                            @click="localidadesModule.editFromView()"
+                            x-show="hasPermission('localidades.update')">
+                        <i class="fas fa-edit me-2"></i>Edit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

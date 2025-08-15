@@ -1,0 +1,104 @@
+<!-- Module View Modal -->
+<div class="modal fade" 
+     x-show="modulesModule.showModuleViewModal" 
+     x-transition:enter="fade-in" 
+     x-transition:leave="fade-out" 
+     id="moduleViewModal" 
+     tabindex="-1">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Module Details: <span x-text="modulesModule.viewingModule.display_name"></span></h5>
+                <button type="button" class="btn-close" @click="modulesModule.closeModuleViewModal()"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <h6>Module Information</h6>
+                        <table class="table table-borderless">
+                            <tr>
+                                <td><strong>Name:</strong></td>
+                                <td x-text="modulesModule.viewingModule.display_name"></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Type:</strong></td>
+                                <td>
+                                    <span class="badge bg-secondary text-capitalize" x-text="modulesModule.viewingModule.type"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Status:</strong></td>
+                                <td>
+                                    <span class="badge" 
+                                          :class="modulesModule.viewingModule.status === 'active' ? 'bg-success' : 'bg-warning'"
+                                          x-text="modulesModule.viewingModule.status"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>System Module:</strong></td>
+                                <td>
+                                    <span x-show="modulesModule.viewingModule.is_system" class="badge bg-info">Yes</span>
+                                    <span x-show="!modulesModule.viewingModule.is_system" class="badge bg-secondary">No</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Content Information</h6>
+                        <table class="table table-borderless">
+                            <tr>
+                                <td><strong>Content Blocks:</strong></td>
+                                <td>
+                                    <span class="badge bg-info" x-text="`${modulesModule.getModuleContentBlocksCount()} blocks`"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Created:</strong></td>
+                                <td x-text="modulesModule.viewingModule.created_at ? new Date(modulesModule.viewingModule.created_at).toLocaleDateString() : 'Unknown'"></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Last Updated:</strong></td>
+                                <td x-text="modulesModule.viewingModule.updated_at ? new Date(modulesModule.viewingModule.updated_at).toLocaleDateString() : 'Unknown'"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div x-show="modulesModule.viewingModule.description" class="mb-3">
+                    <h6>Description</h6>
+                    <p class="text-muted" x-text="modulesModule.viewingModule.description"></p>
+                </div>
+
+                <div class="mt-3">
+                    <h6>Content Preview</h6>
+                    <div class="border rounded p-3" style="max-height: 300px; overflow-y: auto; background-color: #f8f9fa;">
+                        <em class="text-muted" x-show="modulesModule.viewingModule.content">
+                            Module contains <span x-text="modulesModule.getModuleContentBlocksCount()"></span> Editor.js content blocks
+                            <br><small class="text-muted">Edit this module to see and modify the content.</small>
+                        </em>
+                        <em x-show="!modulesModule.viewingModule.content" class="text-muted">No content blocks defined</em>
+                    </div>
+                </div>
+
+                <div class="mt-3">
+                    <h6>Usage Information</h6>
+                    <div class="alert alert-info">
+                        <small>
+                            <strong x-text="modulesModule.getModuleTypeLabel()">Module:</strong>
+                            This module appears automatically on all pages as the <span x-text="modulesModule.viewingModule.type"></span> section.
+                            <span x-show="modulesModule.viewingModule.type === 'header'">It appears at the top of every page.</span>
+                            <span x-show="modulesModule.viewingModule.type === 'footer'">It appears at the bottom of every page.</span>
+                            <span x-show="modulesModule.viewingModule.type === 'sidebar'">It can be positioned on the side of pages.</span>
+                        </small>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @click="modulesModule.closeModuleViewModal()">Close</button>
+                <button type="button" 
+                        class="btn btn-primary" 
+                        @click="modulesModule.editModuleFromView()">Edit Module</button>
+            </div>
+        </div>
+    </div>
+</div> 

@@ -1,0 +1,202 @@
+<!-- Affiliate Modal -->
+<div x-show="affiliatesModule?.showAffiliateModal" 
+     x-transition
+     class="modal" 
+     :class="{ 'd-block': affiliatesModule?.showAffiliateModal }"
+     style="background-color: rgba(0, 0, 0, 0.5);"
+     @click.self="affiliatesModule.closeModal()"
+     x-cloak>
+    <div class="modal-dialog modal-lg" @click.stop>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" x-text="affiliatesModule?.isEditingAffiliate ? 'Edit Affiliate' : 'Create New Affiliate'"></h5>
+                <button type="button" class="btn-close" @click="affiliatesModule.closeModal()"></button>
+            </div>
+            <div class="modal-body">
+                <form @submit.prevent="affiliatesModule.save()">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="affiliate-name" class="form-label">Name *</label>
+                                <input type="text" class="form-control" id="affiliate-name" 
+                                       x-model="affiliatesModule.affiliateForm.name" 
+                                       placeholder="Enter affiliate name" required>
+                                <div class="form-text">The visible name of the affiliate organization</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="affiliate-slug" class="form-label">Slug</label>
+                                <input type="text" class="form-control" id="affiliate-slug" 
+                                       x-model="affiliatesModule.affiliateForm.slug" 
+                                       placeholder="auto-generated from name">
+                                <div class="form-text">URL slug (leave empty to auto-generate)</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="affiliate-description" class="form-label">Description</label>
+                        <textarea class="form-control" id="affiliate-description" 
+                                  x-model="affiliatesModule.affiliateForm.description" 
+                                  rows="3" placeholder="Description of the affiliate"></textarea>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="affiliate-domain" class="form-label">Domain</label>
+                                <input type="text" class="form-control" id="affiliate-domain" 
+                                       x-model="affiliatesModule.affiliateForm.domain" 
+                                       placeholder="e.g., example.com">
+                                <div class="form-text">Domain associated with this affiliate</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="affiliate-logo-url" class="form-label">Logo URL</label>
+                                <input type="url" class="form-control" id="affiliate-logo-url" 
+                                       x-model="affiliatesModule.affiliateForm.logo_url" 
+                                       placeholder="https://example.com/logo.png">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="affiliate-primary-color" class="form-label">Primary Color</label>
+                                <input type="color" class="form-control form-control-color" 
+                                       id="affiliate-primary-color" x-model="affiliatesModule.affiliateForm.primary_color" 
+                                       title="Choose primary brand color">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="affiliate-secondary-color" class="form-label">Secondary Color</label>
+                                <input type="color" class="form-control form-control-color" 
+                                       id="affiliate-secondary-color" x-model="affiliatesModule.affiliateForm.secondary_color" 
+                                       title="Choose secondary brand color">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="affiliate-status" class="form-label">Status</label>
+                                <select class="form-select" id="affiliate-status" x-model="affiliatesModule.affiliateForm.status">
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="affiliate-sort-order" class="form-label">Sort Order</label>
+                                <input type="number" class="form-control" id="affiliate-sort-order" 
+                                       x-model="affiliatesModule.affiliateForm.sort_order" 
+                                       min="0" placeholder="0">
+                                <div class="form-text">Lower numbers appear first</div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @click="affiliatesModule.closeModal()">Cancel</button>
+                <button type="button" class="btn btn-primary" @click="affiliatesModule.save()">
+                    <span x-text="affiliatesModule?.isEditingAffiliate ? 'Update' : 'Create'"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Affiliate View Modal -->
+<div x-show="affiliatesModule?.showAffiliateViewModal" 
+     x-transition
+     class="modal" 
+     :class="{ 'd-block': affiliatesModule?.showAffiliateViewModal }"
+     style="background-color: rgba(0, 0, 0, 0.5);"
+     @click.self="affiliatesModule.closeViewModal()"
+     x-cloak>
+    <div class="modal-dialog modal-lg" @click.stop>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Affiliate Details</h5>
+                <button type="button" class="btn-close" @click="affiliatesModule.closeViewModal()"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h3 class="d-flex align-items-center">
+                            <div class="me-3" style="width: 20px; height: 20px; border-radius: 3px;" 
+                                 :style="{ backgroundColor: affiliatesModule.viewingAffiliate.primary_color || '#007cba' }"></div>
+                            <span x-text="affiliatesModule.viewingAffiliate.name"></span>
+                        </h3>
+                        <p class="text-muted mb-2">
+                            <strong>Slug:</strong> 
+                            <code x-text="affiliatesModule.viewingAffiliate.slug"></code>
+                        </p>
+                        <p class="text-muted mb-2" x-show="affiliatesModule.viewingAffiliate.domain">
+                            <strong>Domain:</strong> 
+                            <span x-text="affiliatesModule.viewingAffiliate.domain"></span>
+                        </p>
+                        <p class="text-muted mb-2" x-show="affiliatesModule.viewingAffiliate.description">
+                            <strong>Description:</strong> 
+                            <span x-text="affiliatesModule.viewingAffiliate.description"></span>
+                        </p>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <span class="badge" 
+                              :class="affiliatesModule.viewingAffiliate.status === 'active' ? 'bg-success' : 'bg-warning'"
+                              x-text="affiliatesModule.viewingAffiliate.status"></span>
+                        <br><br>
+                        <div x-show="affiliatesModule.viewingAffiliate.logo_url">
+                            <img :src="affiliatesModule.viewingAffiliate.logo_url" 
+                                 alt="Logo" style="max-width: 100px; max-height: 50px;">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mt-3" x-show="affiliatesModule.viewingAffiliate.primary_color || affiliatesModule.viewingAffiliate.secondary_color">
+                    <div class="col-md-6" x-show="affiliatesModule.viewingAffiliate.primary_color">
+                        <small class="text-muted">Primary Color:</small><br>
+                        <div class="d-flex align-items-center">
+                            <div class="me-2" style="width: 30px; height: 20px; border-radius: 3px; border: 1px solid #ddd;" 
+                                 :style="{ backgroundColor: affiliatesModule.viewingAffiliate.primary_color }"></div>
+                            <code x-text="affiliatesModule.viewingAffiliate.primary_color"></code>
+                        </div>
+                    </div>
+                    <div class="col-md-6" x-show="affiliatesModule.viewingAffiliate.secondary_color">
+                        <small class="text-muted">Secondary Color:</small><br>
+                        <div class="d-flex align-items-center">
+                            <div class="me-2" style="width: 30px; height: 20px; border-radius: 3px; border: 1px solid #ddd;" 
+                                 :style="{ backgroundColor: affiliatesModule.viewingAffiliate.secondary_color }"></div>
+                            <code x-text="affiliatesModule.viewingAffiliate.secondary_color"></code>
+                        </div>
+                    </div>
+                </div>
+                
+                <hr>
+                <div class="row">
+                    <div class="col-md-6">
+                        <small class="text-muted">Created:</small><br>
+                        <span x-text="new Date(affiliatesModule.viewingAffiliate.created_at).toLocaleDateString()"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <small class="text-muted">Last Updated:</small><br>
+                        <span x-text="new Date(affiliatesModule.viewingAffiliate.updated_at).toLocaleDateString()"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @click="affiliatesModule.closeViewModal()">Close</button>
+                <button type="button" class="btn btn-primary" @click="affiliatesModule.editFromView()" x-show="hasPermission('affiliates.update')">
+                    <i class="fas fa-edit me-2"></i>Edit
+                </button>
+            </div>
+        </div>
+    </div>
+</div> 
